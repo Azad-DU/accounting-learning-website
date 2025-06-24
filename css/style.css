@@ -60,6 +60,11 @@ header nav ul li a:hover,
 header nav ul li a.active {
     color: #3498db; /* A lighter blue for hover/active */
 }
+header nav ul li a.active {
+    color: #3498db; /* The existing light blue accent color */
+    font-weight: 700; /* Bolder text */
+    border-bottom: 2px solid #3498db; /* Underline effect */
+}
 
 /* Dropdown Menu Styles */
 .dropdown-content {
@@ -680,4 +685,31 @@ footer {
     .about-image {
         position: static; /* Unstick the image on smaller screens */
     }
+}
+/* --- New Styles for Journal Entry Page --- */
+.journal-entry-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+.journal-entry-table th, .journal-entry-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+.journal-entry-table th {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    font-weight: 600;
+}
+.journal-entry-table .account-credit {
+    padding-left: 30px; /* Indents the credit account */
+}
+.journal-entry-table .account-memo {
+    color: #555;
+    padding-left: 30px;
+}
+.journal-entry-table tbody tr:hover {
+    background-color: #f9f9f9;
 }

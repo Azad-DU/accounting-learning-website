@@ -94,4 +94,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    // Add this new code block inside the DOMContentLoaded listener in js/script.js
+
+    // --- Active Navigation Link Logic ---
+    // This code will run on every page to highlight the correct nav link.
+
+    // Get the filename of the current page (e.g., "about.html", "index.html")
+    const activePage = window.location.pathname.split('/').pop();
+
+    // Select all the links in the main navigation
+    const navLinks = document.querySelectorAll('header nav a');
+
+    navLinks.forEach(link => {
+        // Get the filename from the link's href attribute
+        const linkPage = link.getAttribute('href').split('/').pop();
+
+        // Check for a match.
+        // The second condition handles the homepage, where the activePage might be empty.
+        if (linkPage === activePage || (activePage === '' && linkPage === 'index.html')) {
+            link.classList.add('active');
+        }
+    });
 });
