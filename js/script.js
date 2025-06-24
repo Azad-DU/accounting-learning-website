@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const allTopics = [
         { id: 'basic-accounting-equation', name: 'Basic Accounting Equation' },
         { id: 'debits-credits', name: 'Debits & Credits' },
-        { id: 'financial-statements', name: 'Financial Statements' }
+        { id: 'financial-statements', name: 'Financial Statements' },
+        { id: 'journal-entry', name: 'The Journal Entry' }
         // Add more topics here as you create them
     ];
 
