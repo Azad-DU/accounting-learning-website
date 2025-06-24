@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Statements - Accounting Fundamentals</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Accounting Fundamentals</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Topics</a>
+                        <div class="dropdown-content">
+                            <a href="basic-accounting-equation.html">Basic Accounting Equation</a>
+                            <a href="debits-credits.html">Debits & Credits</a>
+                            <a href="financial-statements.html">Financial Statements</a>
+                        </div>
+                    </li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="#" id="view-progress">View Progress</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container topic-page">
+        <h2>The Core Financial Statements</h2>
+        <p>Financial statements are formal records of a business's financial activities. They provide a snapshot of a company's health and performance. The three primary statements are the Income Statement, the Balance Sheet, and the Statement of Cash Flows.</p>
+        
+        <h3>1. The Income Statement</h3>
+        <p>Also known as the Profit and Loss (P&L) statement, it shows a company's financial performance over a specific period (e.g., a month, quarter, or year).</p>
+        <p class="formula-box">
+            {Revenues} - {Expenses} ={Net Income (or Loss)}
+        </p>
+
+        <h3>2. The Balance Sheet</h3>
+        <p>The Balance Sheet presents a snapshot of a company's financial position at a single point in time. It is a direct representation of the accounting equation.</p>
+        <p class="formula-box">
+           {Assets} = {Liabilities} + \text{Equity} 
+        </p>
+        <p>Net income from the Income Statement increases the Equity on the Balance Sheet (through Retained Earnings).</p>
+
+        <h3>3. The Statement of Cash Flows</h3>
+        <p>This statement shows how cash has moved into and out of the company from three types of activities: operating, investing, and financing. It reconciles the beginning and ending cash balances over a period.</p>
+
+        <h3>Interactive Diagram: How They Connect</h3>
+        <div class="diagram-container">
+            <div id="statements-diagram" class="interactive-diagram">
+                <div class="diagram-box" data-info="The Income Statement calculates Net Income.">Income Statement</div>
+                <div class="diagram-operator">&rarr;</div>
+                <div class="diagram-box" data-info="Net Income flows into Equity on the Balance Sheet.">Balance Sheet</div>
+                <div class="diagram-operator">&rarr;</div>
+                <div class="diagram-box" data-info="The Statement of Cash Flows explains the change in the Cash account on the Balance Sheet.">Statement of Cash Flows</div>
+            </div>
+            <p class="diagram-instruction">Click on a statement to learn about its role.</p>
+            <div id="diagram-info-display" class="info-display">Click on an element in the diagram to see its definition.</div>
+        </div>
+        
+        <h3>Practice Quiz: Financial Statements</h3>
+        <div id="quiz-container">
+            </div>
+        <button id="submit-quiz" class="button" style="display: none;">Submit Quiz</button>
+        <div id="quiz-results"></div>
+        <button id="mark-topic-complete" class="button" data-topic-id="financial-statements" style="display: none;">Mark Topic as Complete</button>
+
+        <nav class="pagination">
+            <a href="debits-credits.html" class="button prev-button">&larr; Previous Topic</a>
+            <a href="../index.html" class="button next-button">Back to Home &rarr;</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Accounting Fundamentals. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="progress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Your Learning Progress</h2>
+            <div id="progress-details">
+                </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/diagram.js"></script>
+
+    <script src="../js/financial-statements-quiz.js"></script>
+</body>
+</html>

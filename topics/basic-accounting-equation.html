@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Accounting Equation - Accounting Fundamentals</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Accounting Fundamentals</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Topics</a>
+                        <div class="dropdown-content">
+                            <a href="basic-accounting-equation.html">Basic Accounting Equation</a>
+                            <a href="debits-credits.html">Debits & Credits</a>
+                            <a href="financial-statements.html">Financial Statements</a>
+                            </div>
+                    </li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="#" id="view-progress">View Progress</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container topic-page">
+        <h2>The Basic Accounting Equation</h2>
+        <p>The basic accounting equation is the foundation of the double-entry accounting system. It shows that all assets are funded by either debt or equity.</p>
+        
+        <h3>Formula:</h3>
+        <p class="formula-box">
+           <b>{Assets} = {Liabilities} + {Owner's Equity}</b> 
+        </p>
+
+        <h3>Explanation of Components:</h3>
+        <ul>
+            <li><strong>Assets:</strong> Resources owned by the business that have future economic value and are expected to provide a future benefit. (e.g., Cash, Accounts Receivable, Inventory, Equipment, Buildings).</li>
+            <li><strong>Liabilities:</strong> Obligations of the business to outside parties—what the company owes. (e.g., Accounts Payable, Loans Payable, Salaries Payable).</li>
+            <li><strong>Equity (or Owner's Equity/Stockholders' Equity):</strong> The owners' claim to the assets of the business after all liabilities have been paid. It represents the residual interest in the assets after deducting liabilities. (e.g., Capital, Retained Earnings, Common Stock).</li>
+        </ul>
+
+        <h3>Interactive Diagram: Accounting Equation Flow</h3>
+        <div class="diagram-container">
+            <div id="accounting-equation-diagram" class="interactive-diagram">
+                <div class="diagram-box asset-box" data-info="Assets are resources owned by the business.">Assets</div>
+                <div class="diagram-operator">=</div>
+                <div class="diagram-box liability-box" data-info="Liabilities are what the business owes to others.">Liabilities</div>
+                <div class="diagram-operator">+</div>
+                <div class="diagram-box equity-box" data-info="Equity is the owner's claim on assets.">Equity</div>
+            </div>
+            <p class="diagram-instruction">Click on each box above to learn more about its component.</p>
+            <div id="diagram-info-display" class="info-display">Click on an element in the diagram to see its definition.</div>
+        </div>
+
+        <h3>How it Works:</h3>
+        <p>This equation must always balance. Every financial transaction affects at least two accounts, ensuring the equation remains in equilibrium. For example:</p>
+        <ul>
+            <li>If a company buys equipment with cash (an Asset for an Asset), one asset increases, and another asset decreases by the same amount, keeping the total assets unchanged.</li>
+            <li>If a company takes out a loan (Cash increases - Asset; Loan Payable increases - Liability), both sides of the equation increase by the same amount.</li>
+        </ul>
+
+        <h3>Practice Quiz: Basic Accounting Equation</h3>
+        <div id="quiz-container">
+            </div>
+        <button id="submit-quiz" class="button" style="display: none;">Submit Quiz</button>
+        <div id="quiz-results"></div>
+        <button id="mark-topic-complete" class="button" data-topic-id="basic-accounting-equation" style="display: none;">Mark Topic as Complete</button>
+
+        <nav class="pagination">
+            <a href="../index.html" class="button prev-button">&larr; Back to Home</a>
+            <a href="debits-credits.html" class="button next-button">Next Topic: Debits & Credits &rarr;</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Accounting Fundamentals. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="progress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Your Learning Progress</h2>
+            <div id="progress-details">
+                </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/quiz.js"></script>
+    <script src="../js/diagram.js"></script>
+</body>
+</html>
