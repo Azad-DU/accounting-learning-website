@@ -116,4 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add('active');
         }
     });
+    // Add this new code block inside the DOMContentLoaded listener in js/script.js
+
+    // --- Hamburger Menu Logic ---
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navMenu = document.querySelector('header nav');
+
+    if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', () => {
+            // Toggles the 'active' class on the nav menu
+            navMenu.classList.toggle('active');
+        });
+    }
 });
