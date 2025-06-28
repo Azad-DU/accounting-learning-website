@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let quizQuestions = []; // Variable to store the questions with answers
 
   // 1. Fetch the quiz data from our Python API
-  fetch(apiUrl)
+  fetch(apiUrl, { credentials: 'include' })
     .then(response => {
       if (!response.ok) throw new Error('Network response was not ok');
       return response.json();

@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Content-Type': 'application/json', // Tell the server we're sending JSON
       },
       body: JSON.stringify(formData), // Convert our JS object to a JSON string
+      credentials:'include'
     })
     .then(response => response.json())
     .then(data => {

@@ -1,131 +1,161 @@
-// Wait for the HTML document to be fully loaded before running the script
+// js/script.js - Final and Complete Version
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Progress Modal Functionality ---
-    const viewProgressBtn = document.getElementById('view-progress');
+    // --- 1. SELECT ALL NECESSARY ELEMENTS ---
+    // For Dynamic Navigation & Auth
+    const loggedInElements = document.querySelectorAll('.logged-in');
+    const loggedOutElements = document.querySelectorAll('.logged-out');
+    const usernameSpan = document.getElementById('nav-username');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // For Modals
     const progressModal = document.getElementById('progress-modal');
-    const closeButton = document.querySelector('.close-button');
+    const viewProgressBtn = document.getElementById('view-progress');
+    const progressCloseButton = progressModal ? progressModal.querySelector('.close-button') : null;
     const progressDetails = document.getElementById('progress-details');
 
-    // List of all topics available on the website
-    const allTopics = [
-        { id: 'basic-accounting-equation', name: 'Basic Accounting Equation' },
-        { id: 'debits-credits', name: 'Debits & Credits' },
-        { id: 'financial-statements', name: 'Financial Statements' },
-        { id: 'journal-entry', name: 'The Journal Entry' }
-        // Add more topics here as you create them
-    ];
+    const loginPromptModal = document.getElementById('login-prompt-modal');
+    const loginPromptCloseButton = loginPromptModal ? loginPromptModal.querySelector('.close-button') : null;
+    
+    // For Hamburger Menu
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navMenu = document.querySelector('header nav');
 
-    // Function to open the progress modal
-    const openModal = () => {
-        // Get progress data from browser's local storage
-        const progressData = JSON.parse(localStorage.getItem('accountingProgress')) || {};
-        
-        // Clear previous details
-        progressDetails.innerHTML = '';
+    // For Progress Tracking
+    const markCompleteBtn = document.getElementById('mark-topic-complete');
 
-        if (allTopics.length > 0) {
-            const ul = document.createElement('ul');
-            allTopics.forEach(topic => {
-                const isCompleted = progressData[topic.id] && progressData[topic.id].completed;
-                
-                const li = document.createElement('li');
-                li.className = isCompleted ? 'completed' : 'incomplete';
-                
-                const topicNameSpan = document.createElement('span');
-                topicNameSpan.textContent = topic.name;
-                
-                const statusSpan = document.createElement('span');
-                statusSpan.className = 'progress-status';
-                statusSpan.textContent = isCompleted ? 'Completed' : 'Incomplete';
-                
-                li.appendChild(topicNameSpan);
-                li.appendChild(statusSpan);
-                ul.appendChild(li);
-            });
-            progressDetails.appendChild(ul);
-        } else {
-            progressDetails.innerHTML = '<p>No topics available yet.</p>';
-        }
 
-        progressModal.style.display = 'block';
-    };
+    // --- 2. SESSION CHECK & DYNAMIC UI UPDATES ---
+    // This is the core logic that runs on every page load to check login status.
+    fetch('http://localhost:5000/api/check_session', { credentials: 'include' })
+        .then(response => {
+            if (!response.ok) {
+                console.error("Network response was not ok for session check");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.logged_in) {
+                // USER IS LOGGED IN
+                loggedInElements.forEach(el => el.style.display = 'inline-block');
+                loggedOutElements.forEach(el => el.style.display = 'none');
+                if (usernameSpan) {
+                    usernameSpan.textContent = `Welcome, ${data.username}`;
+                }
+            } else {
+                // USER IS LOGGED OUT
+                loggedInElements.forEach(el => el.style.display = 'none');
+                loggedOutElements.forEach(el => el.style.display = 'inline-block');
 
-    // Function to close the progress modal
-    const closeModal = () => {
-        progressModal.style.display = 'none';
-    };
-
-    // Event listeners for the modal
-    if (viewProgressBtn && progressModal && closeButton) {
-        viewProgressBtn.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent the link from navigating
-            openModal();
+                // Show the login prompt modal once per browser session
+                if (!sessionStorage.getItem('loginPromptShown')) {
+                    if (loginPromptModal) {
+                        loginPromptModal.style.display = 'block';
+                    }
+                    sessionStorage.setItem('loginPromptShown', 'true');
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Could not connect to the back-end to check session. Is the server running?", error);
+            // On failure to connect, default to the logged-out view
+            loggedInElements.forEach(el => el.style.display = 'none');
+            loggedOutElements.forEach(el => el.style.display = 'inline-block');
         });
 
-        closeButton.addEventListener('click', closeModal);
+    
+    // --- 3. EVENT LISTENERS ---
 
-        // Close modal if user clicks outside of the modal content
-        window.addEventListener('click', (event) => {
-            if (event.target == progressModal) {
-                closeModal();
-            }
+    // Logout Button
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            fetch('http://localhost:5000/api/logout', { method: 'POST', credentials: 'include' })
+                .then(() => {
+                    alert('You have been logged out.');
+                    // Handle redirection correctly based on the current page's location
+                    if (window.location.pathname.includes('/topics/')) {
+                        window.location.href = '../index.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                });
         });
     }
 
-    // --- Mark Topic as Complete Functionality (found on topic pages) ---
-    const markCompleteBtn = document.getElementById('mark-topic-complete');
+    // Hamburger Menu
+    if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // "View Progress" Modal
+    if (viewProgressBtn && progressModal && progressCloseButton) {
+        const allTopics = [
+            { id: 'basic-accounting-equation', name: 'Basic Accounting Equation' },
+            { id: 'debits-credits', name: 'Debits & Credits' },
+            { id: 'financial-statements', name: 'Financial Statements' },
+            { id: 'journal-entry', name: 'The Journal Entry' }
+        ];
+
+        const openProgressModal = () => {
+            const progressData = JSON.parse(localStorage.getItem('accountingProgress')) || {};
+            progressDetails.innerHTML = '';
+            const ul = document.createElement('ul');
+            allTopics.forEach(topic => {
+                const isCompleted = progressData[topic.id] && progressData[topic.id].completed;
+                const li = document.createElement('li');
+                li.className = isCompleted ? 'completed' : 'incomplete';
+                li.innerHTML = `<span>${topic.name}</span><span class="progress-status">${isCompleted ? 'Completed' : 'Incomplete'}</span>`;
+                ul.appendChild(li);
+            });
+            progressDetails.appendChild(ul);
+            progressModal.style.display = 'block';
+        };
+
+        const closeProgressModal = () => {
+            progressModal.style.display = 'none';
+        };
+
+        viewProgressBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            openProgressModal();
+        });
+        progressCloseButton.addEventListener('click', closeProgressModal);
+    }
+    
+    // "Please Login" Prompt Modal Close Button
+    if (loginPromptModal && loginPromptCloseButton) {
+        loginPromptCloseButton.addEventListener('click', () => {
+            loginPromptModal.style.display = 'none';
+        });
+    }
+
+    // Universal listener to close any modal when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target == progressModal) {
+            progressModal.style.display = 'none';
+        }
+        if (event.target == loginPromptModal) {
+            loginPromptModal.style.display = 'none';
+        }
+    });
+
+    // "Mark Topic as Complete" Button Logic
     if (markCompleteBtn) {
         markCompleteBtn.addEventListener('click', () => {
             const topicId = markCompleteBtn.getAttribute('data-topic-id');
             if (topicId) {
-                // Get existing progress, or create a new object
                 let progressData = JSON.parse(localStorage.getItem('accountingProgress')) || {};
-                
-                // Update the specific topic's status
                 progressData[topicId] = { ...progressData[topicId], completed: true };
-
-                // Save the updated progress back to local storage
                 localStorage.setItem('accountingProgress', JSON.stringify(progressData));
-
-                alert(`Topic "${topicId.replace(/-/g, ' ')}" marked as complete!`);
+                alert(`Topic marked as complete!`);
                 markCompleteBtn.textContent = 'Topic Complete!';
                 markCompleteBtn.disabled = true;
-                markCompleteBtn.style.backgroundColor = '#28a745'; // Green color
             }
         });
     }
-    // Add this new code block inside the DOMContentLoaded listener in js/script.js
 
-    // --- Active Navigation Link Logic ---
-    // This code will run on every page to highlight the correct nav link.
-
-    // Get the filename of the current page (e.g., "about.html", "index.html")
-    const activePage = window.location.pathname.split('/').pop();
-
-    // Select all the links in the main navigation
-    const navLinks = document.querySelectorAll('header nav a');
-
-    navLinks.forEach(link => {
-        // Get the filename from the link's href attribute
-        const linkPage = link.getAttribute('href').split('/').pop();
-
-        // Check for a match.
-        // The second condition handles the homepage, where the activePage might be empty.
-        if (linkPage === activePage || (activePage === '' && linkPage === 'index.html')) {
-            link.classList.add('active');
-        }
-    });
-    // Add this new code block inside the DOMContentLoaded listener in js/script.js
-
-    // --- Hamburger Menu Logic ---
-    const hamburgerBtn = document.getElementById('hamburger-btn');
-    const navMenu = document.querySelector('header nav');
-
-    if (hamburgerBtn && navMenu) {
-        hamburgerBtn.addEventListener('click', () => {
-            // Toggles the 'active' class on the nav menu
-            navMenu.classList.toggle('active');
-        });
-    }
 });

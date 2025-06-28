@@ -1,20 +1,23 @@
 # app.py
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy # [# 1. IMPORT SQLAlchemy]
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# The clean and correct configuration block
 
 app = Flask(__name__)
-CORS(app)
 
-# [# 2. CONFIGURE THE DATABASE]
-# This tells our app where to find the database file.
-# We're creating a file named 'database.db' in our project folder.
+# 1. Add all your configurations
+app.config['SECRET_KEY'] = 'your-super-secret-key-that-should-be-random'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# [# 3. INITIALIZE THE DATABASE]
-# Create a database object from the SQLAlchemy class
+# 2. Initialize CORS *once* with the correct settings
+CORS(app, supports_credentials=True)
+
+# 3. Initialize the database
 db = SQLAlchemy(app)
 
 
@@ -44,6 +47,21 @@ class Message(db.Model):
     subject = db.Column(db.String(200), nullable=False)
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=db.func.now())
+# In app.py, add this class with your other models
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False) # Store the hash, not the password
+
+    # Method to set the password hash from a password
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    # Method to check a password against the stored hash
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)    
 
 # --- API ENDPOINT (Now using the database) ---
 
@@ -102,6 +120,42 @@ def handle_contact_form():
 
     # Return a success response
     return jsonify({"message": "Your message has been received successfully!"}), 201
+ # In app.py, add this new route with the others
+
+@app.route("/api/register", methods=['POST'])
+def register_user():
+    # 1. Get the data from the incoming JSON request
+    data = request.get_json()
+
+    # 2. Basic validation to make sure all fields are present
+    if not data or not all(k in data for k in ['username', 'email', 'password']):
+        return jsonify({"error": "Missing username, email, or password"}), 400
+
+    username = data['username']
+    email = data['email']
+    password = data['password']
+
+    # 3. Check if the username or email already exists in the database
+    if User.query.filter_by(username=username).first():
+        # 409 is the HTTP status code for "Conflict"
+        return jsonify({"error": "Username already exists"}), 409
+
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "Email address already registered"}), 409
+
+    # 4. If validation passes, create a new User instance
+    new_user = User(username=username, email=email)
+
+    # 5. Set the hashed password using the secure method from our model
+    new_user.set_password(password)
+
+    # 6. Add the new user to the database session and commit to save it
+    db.session.add(new_user)
+    db.session.commit()
+
+    # 7. Return a success response
+    # 201 is the HTTP status code for "Created"
+    return jsonify({"message": f"User '{username}' created successfully!"}), 201   
 # --- TEMPORARY ROUTE TO VIEW MESSAGES ---
 @app.route("/api/messages")
 def view_messages():
@@ -118,6 +172,40 @@ def view_messages():
             "timestamp": msg.timestamp.isoformat() # Convert timestamp to string
         })
     return jsonify(output)
+# In app.py, add this new route
+
+@app.route("/api/login", methods=['POST'])
+def login_user():
+    data = request.get_json()
+    if not data or not data.get('username') or not data.get('password'):
+        return jsonify({"error": "Missing username or password"}), 400
+
+    user = User.query.filter_by(username=data.get('username')).first()
+
+    # Check if user exists and if the password hash matches
+    if user and user.check_password(data.get('password')):
+        # If credentials are correct, store user info in the session
+        session['user_id'] = user.id
+        session['username'] = user.username
+        return jsonify({"message": f"Welcome back, {user.username}!"}), 200
+    else:
+        # If credentials are bad, return an "Unauthorized" error
+        return jsonify({"error": "Invalid username or password"}), 401 
+@app.route("/api/logout", methods=['POST'])
+def logout_user():
+    session.clear() # Clears all data from the session
+    return jsonify({"message": "Successfully logged out"}), 200
+# In app.py, add this new route
+
+@app.route("/api/check_session")
+def check_session():
+    if 'user_id' in session:
+        # If the user's ID is found in the session, they are logged in.
+        # Return their status and username.
+        return jsonify({"logged_in": True, "username": session.get('username')})
+    else:
+        # If not, they are logged out.
+        return jsonify({"logged_in": False})               
  
 # Note: We keep this part the same
 if __name__ == '__main__':

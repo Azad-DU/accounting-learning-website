@@ -794,3 +794,11 @@ header .container {
     justify-content: space-between; /* Pushes the title and nav to opposite ends */
     align-items: center;           /* This is the key: Vertically aligns everything to the middle */
 }
+.auth-form-container {
+    max-width: 500px;
+    margin: 40px auto; /* Center the form on the page */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
