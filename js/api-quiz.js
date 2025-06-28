@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // This is the URL of our Python API endpoint
-  const apiUrl = `http://localhost:5000/api/quiz/${topicId}`;
+  const apiUrl = `https://accounting-api-akazad.onrender.com/api/quiz/${topicId}`;
 
   // Use the modern fetch() function to get data from the API
   fetch(apiUrl)
