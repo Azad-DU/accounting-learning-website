@@ -31,7 +31,7 @@ header h1 {
 }
 
 header nav {
-    float: right;
+    
     vertical-align: middle;
 }
 
@@ -786,4 +786,11 @@ footer {
         background-color: #3498db; /* Highlight on hover/active */
         transform: none; /* No lifting effect on mobile */
     }
+}
+/* --- Header Alignment Fix --- */
+/* This makes the header a flex container to easily align its children */
+header .container {
+    display: flex;
+    justify-content: space-between; /* Pushes the title and nav to opposite ends */
+    align-items: center;           /* This is the key: Vertically aligns everything to the middle */
 }
