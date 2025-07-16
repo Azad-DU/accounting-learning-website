@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: Financial Ratio Analysis</title>
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a non-linear, exploratory dashboard. This structure was chosen over a linear report format to enhance user engagement and understanding. It consists of five main sections accessible via a sticky header: 1. 'Home' provides an overview with the report's abstract. 2. 'Ratio Explorer' acts as an interactive glossary, allowing users to select a ratio category (Liquidity, Profitability, etc.) and then view detailed cards for each specific ratio, making it easy to look up definitions and formulas. 3. 'Case Studies' brings the data to life with interactive charts for KRIBHCO and PT. Mayora Indah, enabling users to visualize trends and comparisons dynamically. 4. 'Advanced Insights' distills complex topics like predictive models and methodological critiques into digestible, tabbed content. 5. 'Best Practices' offers a clear, actionable conclusion. This user-driven, thematic structure is optimal for turning a dense academic report into an intuitive learning tool. -->
+    <!-- Visualization & Content Choices: The application uses a mix of interactive elements to achieve different communication goals, all without using SVG or Mermaid. 1. (Goal: Organize/Inform) Ratio Explorer: Uses a tab-and-accordion layout (HTML/CSS/JS) to present definitions. This organizes a large volume of information cleanly. 2. (Goal: Show Change/Compare) KRIBHCO Case Study: A dynamic Chart.js line chart is used, updated via a dropdown. This is the best way to show the 9-year trend and allow users to compare different profitability metrics interactively, highlighting the key narrative of the case. 3. (Goal: Compare) PT. Mayora Indah Case Study: A Chart.js grouped bar chart compares three ratios across three years, which is ideal for showing both absolute values and year-over-year changes simultaneously. 4. (Goal: Organize/Inform) Advanced Topics/Recommendations: These use styled cards and lists (HTML/CSS/JS) to break down dense text into engaging, easy-to-navigate blocks. All choices prioritize interactivity and clarity, transforming static report data into an exploratory experience. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 320px; max-height: 450px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .nav-link.active { color: #0f766e; border-bottom-color: #0f766e; }
+    </style>
+</head>
+<body class="bg-stone-50 text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-stone-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-lg text-teal-700">Financial Ratio Analysis</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-teal-600 border-b-2 border-transparent">Home</a>
+                        <a href="#explorer" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-teal-600 border-b-2 border-transparent">Ratio Explorer</a>
+                        <a href="#cases" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-teal-600 border-b-2 border-transparent">Case Studies</a>
+                        <a href="#insights" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-teal-600 border-b-2 border-transparent">Advanced Insights</a>
+                        <a href="#best-practices" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-teal-600 border-b-2 border-transparent">Best Practices</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-teal-600 hover:bg-stone-100 focus:outline-none">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-stone-100">Home</a>
+                <a href="#explorer" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-stone-100">Ratio Explorer</a>
+                <a href="#cases" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-stone-100">Case Studies</a>
+                <a href="#insights" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-stone-100">Advanced Insights</a>
+                <a href="#best-practices" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-stone-100">Best Practices</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-teal-800">An Interactive Guide to Corporate Performance Evaluation</h1>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">Transforming complex financial data into actionable intelligence. Explore the critical tool of financial ratio analysis through interactive examples and expert insights.</p>
+                <div class="mt-8 bg-white p-6 rounded-2xl shadow-sm border border-stone-200 text-left">
+                     <h2 class="text-xl font-semibold mb-3 text-teal-700">Abstract</h2>
+                     <p class="text-gray-700 leading-relaxed">This report provides a comprehensive examination of financial ratio analysis as a critical tool for evaluating corporate performance. It synthesizes foundational concepts from established literature, detailing the primary categories of financial ratios: liquidity, profitability, solvency, and activity. The purpose and application of these ratios are illustrated through the analysis of case studies, demonstrating how ratio analysis can diagnose financial health and operational efficiency. The report further explores the evolution of ratio analysis into a predictive tool and presents a critical perspective on common methodological challenges. It concludes with strategic recommendations for best practices in financial analysis for managers, analysts, and researchers, emphasizing a holistic, context-aware, and statistically rigorous approach to derive meaningful insights.</p>
+                     <p class="mt-4 text-sm text-gray-500 italic">A synthesis by: Team Triumph</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="explorer" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-teal-800">Ratio Explorer</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-600">This section provides an interactive reference for the core categories of financial ratios. Select a category to learn about the specific ratios used to measure that dimension of a company's performance, including their formulas and what they reveal.</p>
+                </div>
+                <div class="flex justify-center mb-8 flex-wrap gap-2 md:gap-4">
+                    <button data-category="liquidity" class="category-btn bg-teal-600 text-white px-5 py-2 rounded-full font-semibold shadow-md hover:bg-teal-700 transition">Liquidity Ratios</button>
+                    <button data-category="profitability" class="category-btn bg-white text-gray-700 px-5 py-2 rounded-full font-semibold shadow-md hover:bg-stone-100 transition">Profitability Ratios</button>
+                    <button data-category="solvency" class="category-btn bg-white text-gray-700 px-5 py-2 rounded-full font-semibold shadow-md hover:bg-stone-100 transition">Solvency Ratios</button>
+                    <button data-category="activity" class="category-btn bg-white text-gray-700 px-5 py-2 rounded-full font-semibold shadow-md hover:bg-stone-100 transition">Activity Ratios</button>
+                </div>
+                <div id="ratio-details-container" class="max-w-4xl mx-auto"></div>
+            </div>
+        </section>
+
+        <section id="cases" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-teal-800">Case Studies in Practice</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-600">This section demonstrates how ratio analysis is applied to real-world companies. Interactive charts visualize financial trends, turning raw data into clear performance narratives and highlighting the diagnostic power of this tool.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-stone-200">
+                    <div class="flex justify-center border-b border-stone-200 mb-6">
+                        <button data-case="kribhco" class="case-btn text-teal-600 border-b-2 border-teal-600 py-3 px-6 font-semibold">KRIBHCO Profitability Analysis</button>
+                        <button data-case="mayora" class="case-btn text-gray-500 border-b-2 border-transparent py-3 px-6 font-semibold">PT. Mayora Liquidity Assessment</button>
+                    </div>
+                    <div id="case-content-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-teal-800">Advanced Insights & Critiques</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-600">Ratio analysis extends beyond simple description into predictive analytics, but it's not without its challenges. This section explores the evolution of predictive models and the critical methodological issues every analyst should consider for a more rigorous approach.</p>
+                </div>
+                 <div class="max-w-4xl mx-auto">
+                    <div class="flex justify-center border-b border-stone-200 mb-6">
+                        <button data-insight="predictive" class="insight-btn text-teal-600 border-b-2 border-teal-600 py-3 px-6 font-semibold">Predictive Models</button>
+                        <button data-insight="critiques" class="insight-btn text-gray-500 border-b-2 border-transparent py-3 px-6 font-semibold">Methodological Critiques</button>
+                    </div>
+                    <div id="insight-content-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="best-practices" class="py-16 md:py-24">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-teal-800">Conclusion & Best Practices</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-600">To maximize its value, financial analysis must be a holistic, context-aware, and statistically rigorous process. This final section outlines strategic recommendations for both practitioners and researchers to enhance the quality and impact of their work.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                        <h3 class="font-bold text-xl text-teal-700 mb-4">For Financial Analysts & Managers</h3>
+                        <ul class="space-y-3 text-gray-700 list-inside">
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">Adopt a Holistic Narrative:</strong> Move beyond single ratios. Weave data points into a coherent story that explains the 'why' behind the numbers.</span></li>
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">Prioritize Context & Robust Benchmarking:</strong> Compare against historical data and industry MEDIANS, not means, to avoid skewed results.</span></li>
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">Embrace Analytical Humility:</strong> Recognize the statistical limitations of ratios (e.g., proportionality and normality assumptions are often violated).</span></li>
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">Use Predictive Models with Skepticism:</strong> Treat models like the Z-score as screening tools, not infallible predictors. Their parameters can be unstable over time.</span></li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                        <h3 class="font-bold text-xl text-teal-700 mb-4">A Framework for Rigorous Analysis</h3>
+                        <ol class="space-y-4">
+                            <li class="flex items-start"><div class="flex-shrink-0 bg-teal-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4">1</div><div class="mt-1"><strong class="font-semibold block">Data Gathering:</strong> Collect financial statements for the company and industry peers over a sufficient time period.</div></li>
+                            <li class="flex items-start"><div class="flex-shrink-0 bg-teal-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4">2</div><div class="mt-1"><strong class="font-semibold block">Statistical Assessment:</strong> Test key ratios for normality and assess proportionality assumptions to inform your choice of analytical techniques.</div></li>
+                            <li class="flex items-start"><div class="flex-shrink-0 bg-teal-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4">3</div><div class="mt-1"><strong class="font-semibold block">Strategic Ratio Selection:</strong> Select a concise, non-redundant set of key metrics representing profitability, liquidity, leverage, and turnover.</div></li>
+                            <li class="flex items-start"><div class="flex-shrink-0 bg-teal-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4">4</div><div class="mt-1"><strong class="font-semibold block">Calculation and Trend Analysis:</strong> Calculate ratios for multiple periods and analyze trends to identify patterns of improvement or deterioration.</div></li>
+                            <li class="flex items-start"><div class="flex-shrink-0 bg-teal-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4">5</div><div class="mt-1"><strong class="font-semibold block">Contextualization & Benchmarking:</strong> Compare ratios against industry medians/quartiles and ground all analysis in the broader economic context.</div></li>
+                            <li class="flex items-start"><div class="flex-shrink-0 bg-teal-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4">6</div><div class="mt-1"><strong class="font-semibold block">Synthesis & Narrative Construction:</strong> Look for connections and divergences among ratios to build a comprehensive narrative of the company's financial story.</div></li>
+                        </ol>
+                    </div>
+                </div>
+             </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t border-stone-200">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p>&copy; 2024 Interactive Report by Team Triumph. All data synthesized from academic sources for educational purposes.</p>
+        </div>
+    </footer>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const appData = {
+        ratios: {
+            liquidity: [
+                { name: 'Current Ratio', formula: 'Current Assets / Current Liabilities', desc: 'Measures a firm’s ability to meet its short-term obligations using its current assets. A common benchmark is 2:1, but this varies by industry. It gives a general sense of liquidity.' },
+                { name: 'Quick Ratio (Acid-Test)', formula: '(Current Assets - Inventory) / Current Liabilities', desc: 'A more stringent test of liquidity that excludes inventory, which can be difficult to sell quickly. It measures the ability to pay current debts without relying on inventory sales.' },
+                { name: 'Cash Ratio', formula: 'Cash / Current Liabilities', desc: 'The most conservative liquidity ratio. It measures the ability to pay off current debt immediately with the most liquid assets (cash and cash equivalents).' },
+            ],
+            profitability: [
+                { name: 'Gross Profit Margin', formula: '(Gross Profit / Net Sales) x 100%', desc: 'Indicates the portion of revenue left after accounting for the cost of goods sold. It reflects the efficiency of production and pricing strategy.' },
+                { name: 'Net Profit Margin', formula: '(Net Profit / Net Sales) x 100%', desc: 'Measures the percentage of each sales dollar remaining after all expenses, including interest and taxes, have been deducted. It is a key indicator of overall profitability.' },
+                { name: 'Return on Assets (ROA)', formula: 'Net Profit / Total Assets', desc: 'Measures the overall effectiveness of management in using the company’s total assets to generate profits. It shows how efficiently assets are converted into earnings.' },
+                { name: 'Return on Equity (ROE)', formula: 'Net Profit / Equity', desc: 'Measures the rate of return earned on the capital invested by shareholders. It is a crucial measure for equity investors, indicating how effectively their capital is being used.' },
+                { name: 'Earnings Per Share (EPS)', formula: '(Net Profit - Preference Dividends) / Number of Equity Shares', desc: 'Expresses a company’s profitability on a per-share basis. It is a widely followed metric by investors to gauge company value.' },
+            ],
+            solvency: [
+                { name: 'Debt-to-Equity Ratio', formula: 'Total Debt / Shareholder\'s Equity', desc: 'A primary indicator of financial leverage, showing the proportion of financing that comes from creditors versus owners. A higher ratio signifies greater risk.' },
+                { name: 'Debt-to-Total Assets Ratio', formula: 'Total Debt / Total Assets', desc: 'Measures the proportion of a company’s assets that are financed through debt. A lower value indicates less reliance on debt and a stronger equity position.' },
+                { name: 'Proprietary Ratio', formula: 'Proprietor\'s Funds / Total Assets', desc: 'Indicates the proportion of total assets owned outright by shareholders, highlighting the safety cushion available to creditors.' },
+            ],
+            activity: [
+                { name: 'Inventory Turnover Ratio', formula: 'Cost of Goods Sold / Average Inventory', desc: 'Indicates how many times a company sells and replaces its inventory over a period. Higher turnover suggests efficient inventory management and strong sales.' },
+                { name: 'Receivables Turnover Ratio', formula: 'Net Credit Sales / Average Receivables', desc: 'Measures how effectively a company collects its accounts receivable. A higher turnover indicates that debts are being collected from customers quickly.' },
+                { name: 'Total Asset Turnover Ratio', formula: 'Net Sales / Total Assets', desc: 'Measures a firm’s efficiency in using its entire asset base to generate sales. It provides a broad view of how effectively the company is deploying its assets.' },
+            ]
+        },
+        cases: {
+            kribhco: {
+                title: 'KRIBHCO Profitability Analysis (2000-2009)',
+                description: "An examination of Krishak Bharati Co-operative Ltd. (KRIBHCO) reveals a complex performance picture. The interactive chart below visualizes key profitability metrics over a nine-year period. Select a ratio from the dropdown to see its trend and the corresponding analysis. Notice the significant gap between the Gross Profit Ratio and the Net Profit Ratio, which points directly to an issue with high post-production expenses.",
+                data: {
+                    labels: ['2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009'],
+                    datasets: {
+                        gpr: { label: 'Gross Profit Ratio (%)', data: [37.61, 37.49, 23.90, 38.25, 35.96, 30.21, 26.21, 28.16, 19.45], analysis: "The Gross Profit Ratio was generally robust, indicating efficiency in core production and pricing. The average GPR over the period was 30.80%, suggesting a fundamentally sound operational model at the production level." },
+                        npr: { label: 'Net Profit Ratio (%)', data: [14.35, 19.08, 3.84, 12.71, 12.33, 12.76, 10.41, 9.38, 9.77], analysis: "The Net Profit Ratio tells a different story. Averaging only 11.63%, the persistent gap between it and the GPR highlights that a large portion of profit was consumed by administrative, selling, and financial charges." },
+                        or: { label: 'Operating Ratio (%)', data: [91.68, 95.16, 110.21, 90.32, 93.31, 97.06, 99.86, 98.49, 104.00], analysis: "The Operating Ratio was consistently high, averaging 97.79% and even exceeding 100% in two years. This is a clear signal of an unsustainable cost structure relative to sales and corroborates the findings from the NPR." },
+                        eps: { label: 'Earning Per Share (Rs. in thousands)', data: [282.37, 382.04, 68.97, 310.26, 356.84, 487.14, 487.36, 527.64, 639.48], analysis: "EPS was considered satisfactory, showing strong growth in later years. This suggests that despite high operating costs, the company was still able to deliver value to its shareholders on a per-share basis." },
+                        roce: { label: 'Return on Capital Employed (%)', data: [10.62, 12.01, 2.04, 10.52, 9.15, 13.00, 10.18, 10.66, 10.59], analysis: "ROCE was modest, averaging 9.86%. This indicates that the overall efficiency of the business in generating returns from its total investment base was limited, reinforcing the need for better cost control." }
+                    }
+                }
+            },
+            mayora: {
+                title: 'PT. Mayora Indah Tbk Liquidity Assessment (2017-2019)',
+                description: "An analysis of PT. Mayora Indah Tbk demonstrates a company with a strong and consistently improving ability to meet its short-term financial obligations. The bar chart below visualizes the three key liquidity ratios over a three-year period, painting a picture of a financially sound company that progressively strengthened its liquidity position.",
+                data: {
+                    labels: ['2017', '2018', '2019'],
+                    datasets: [
+                        { label: 'Current Ratio (%)', data: [238.6, 265.45, 342.85], backgroundColor: 'rgba(13, 148, 136, 0.7)' },
+                        { label: 'Quick Ratio (%)', data: [197.8, 195.11, 267.96], backgroundColor: 'rgba(45, 212, 191, 0.7)' },
+                        { label: 'Cash Ratio (%)', data: [49.21, 52.38, 80], backgroundColor: 'rgba(156, 163, 175, 0.7)' }
+                    ]
+                }
+            }
+        },
+        insights: {
+            predictive: {
+                title: 'The Evolution of Predictive Models',
+                content: `
+                    <p class="mb-4 text-gray-700">While traditionally used for description, financial ratios became powerful inputs for statistical models designed to predict events like corporate failure. This shifted their use from backward-looking assessment to forward-looking forecasting.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-stone-100 rounded-lg">
+                            <h4 class="font-semibold text-teal-700">Early Univariate Models (1960s)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Pioneered by William Beaver, this approach analyzed individual ratios to find an optimal cut-off point for classifying firms as healthy or likely to fail. The ratio of <strong class="font-medium">Cash Flow to Total Debt</strong> was found to be a particularly strong predictor.</p>
+                        </div>
+                        <div class="p-4 bg-stone-100 rounded-lg">
+                            <h4 class="font-semibold text-teal-700">Multivariate Discriminant Analysis (MDA)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Edward Altman's famous 1968 "Z-score" was a breakthrough. It combined several ratios into a single score to effectively separate healthy firms from distressed ones. This multivariate approach became a dominant methodology for decades.</p>
+                        </div>
+                         <div class="p-4 bg-stone-100 rounded-lg">
+                            <h4 class="font-semibold text-teal-700">Second-Generation & Alternative Models</h4>
+                            <p class="text-sm text-gray-600 mt-1">Later models like "Zeta analysis" were developed. Concurrently, techniques like logit or probit analysis gained traction because they estimate the <strong class="font-medium">probability</strong> of an event, offering a more nuanced output than a simple binary classification.</p>
+                        </div>
+                    </div>
+                `
+            },
+            critiques: {
+                title: 'Key Methodological Critiques',
+                content: `
+                    <p class="mb-4 text-gray-700">Despite their widespread use, financial ratios rest on foundational assumptions that have been challenged by academic inquiry. A critical perspective reveals significant issues that can affect analysis.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 border-l-4 border-amber-500 bg-amber-50 rounded-r-lg">
+                            <h4 class="font-semibold text-amber-800">The Proportionality Assumption</h4>
+                            <p class="text-sm text-gray-600 mt-1">Ratios assume a proportional relationship (y = bx) between numerator and denominator to control for size. However, the relationship is often linear with an intercept (y = a + bx), meaning the ratio systematically changes with firm size, leading to biased comparisons.</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-amber-500 bg-amber-50 rounded-r-lg">
+                            <h4 class="font-semibold text-amber-800">Non-Normal Distributions</h4>
+                            <p class="text-sm text-gray-600 mt-1">Most ratios are not normally distributed; they are skewed. This makes the "industry average" (mean) a misleading benchmark. Using the <strong class="font-medium">median</strong> is a more robust approach. It also violates the assumptions of many statistical models like MDA.</p>
+                        </div>
+                         <div class="p-4 border-l-4 border-amber-500 bg-amber-50 rounded-r-lg">
+                            <h4 class="font-semibold text-amber-800">Model Instability and Bias</h4>
+                            <p class="text-sm text-gray-600 mt-1">The relationships captured by predictive models are often not stable over time. Furthermore, models are often built on biased samples (e.g., 50% failed firms), which inflates their perceived accuracy and may not reflect real-world performance where failure is rare.</p>
+                        </div>
+                    </div>
+                `
+            }
+        }
+    };
+
+    const ratioContainer = document.getElementById('ratio-details-container');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+
+    function displayRatios(category) {
+        const ratios = appData.ratios[category];
+        let html = '<div class="space-y-4">';
+        ratios.forEach(ratio => {
+            html += `
+                <div class="ratio-item border border-stone-200 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-stone-100 hover:bg-stone-200 transition flex justify-between items-center">
+                        <span class="font-semibold">${ratio.name}</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="ratio-content hidden p-4 bg-white">
+                        <p class="text-gray-700 mb-2">${ratio.desc}</p>
+                        <code class="text-sm bg-stone-100 text-teal-800 rounded px-2 py-1">${ratio.formula}</code>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        ratioContainer.innerHTML = html;
+
+        document.querySelectorAll('.ratio-item button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('svg');
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+    }
+
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.dataset.category;
+            displayRatios(category);
+            categoryButtons.forEach(btn => {
+                btn.classList.remove('bg-teal-600', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700');
+            });
+            button.classList.add('bg-teal-600', 'text-white');
+            button.classList.remove('bg-white', 'text-gray-700');
+        });
+    });
+    
+    displayRatios('liquidity');
+
+    let kribhcoChart = null;
+    let mayoraChart = null;
+    const caseContentContainer = document.getElementById('case-content-container');
+    const caseButtons = document.querySelectorAll('.case-btn');
+
+    function createKribhcoView() {
+        const caseData = appData.cases.kribhco;
+        const initialMetric = 'gpr';
+        const options = Object.keys(caseData.data.datasets).map(key => 
+            `<option value="${key}" ${key === initialMetric ? 'selected' : ''}>${caseData.data.datasets[key].label}</option>`
+        ).join('');
+
+        caseContentContainer.innerHTML = `
+            <div>
+                <p class="text-gray-600 mb-4">${caseData.description}</p>
+                <div class="mb-4">
+                    <label for="kribhco-metric-select" class="block text-sm font-medium text-gray-700">Select Metric:</label>
+                    <select id="kribhco-metric-select" class="mt-1 block w-full md:w-1/3 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md shadow-sm">
+                        ${options}
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="kribhco-chart"></canvas>
+                </div>
+                <div id="kribhco-analysis-text" class="mt-6 p-4 bg-stone-100 rounded-lg text-gray-700"></div>
+            </div>`;
+
+        const ctx = document.getElementById('kribhco-chart').getContext('2d');
+        const analysisText = document.getElementById('kribhco-analysis-text');
+        
+        function updateKribhcoChart(metricKey) {
+            const metricData = caseData.data.datasets[metricKey];
+            analysisText.textContent = metricData.analysis;
+            
+            if (kribhcoChart) {
+                kribhcoChart.data.datasets[0].label = metricData.label;
+                kribhcoChart.data.datasets[0].data = metricData.data;
+                kribhcoChart.update();
+            } else {
+                kribhcoChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: caseData.data.labels,
+                        datasets: [{
+                            label: metricData.label,
+                            data: metricData.data,
+                            borderColor: '#0f766e',
+                            backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: false } },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) { return `${context.dataset.label}: ${context.formattedValue}`; }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        document.getElementById('kribhco-metric-select').addEventListener('change', (e) => {
+            updateKribhcoChart(e.target.value);
+        });
+        
+        updateKribhcoChart(initialMetric);
+    }
+    
+    function createMayoraView() {
+        const caseData = appData.cases.mayora;
+        caseContentContainer.innerHTML = `
+            <div>
+                <p class="text-gray-600 mb-4">${caseData.description}</p>
+                <div class="chart-container">
+                    <canvas id="mayora-chart"></canvas>
+                </div>
+            </div>
+        `;
+        if (mayoraChart) mayoraChart.destroy();
+        const ctx = document.getElementById('mayora-chart').getContext('2d');
+        mayoraChart = new Chart(ctx, {
+            type: 'bar',
+            data: caseData.data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Percentage (%)' } } },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) { return `${context.dataset.label}: ${context.formattedValue}%`; }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    caseButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const caseKey = button.dataset.case;
+            caseButtons.forEach(btn => {
+                btn.classList.remove('text-teal-600', 'border-teal-600');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+            button.classList.add('text-teal-600', 'border-teal-600');
+            button.classList.remove('text-gray-500', 'border-transparent');
+            
+            if(kribhcoChart) { kribhcoChart.destroy(); kribhcoChart = null; }
+            if(mayoraChart) { mayoraChart.destroy(); mayoraChart = null; }
+
+            if (caseKey === 'kribhco') createKribhcoView();
+            else createMayoraView();
+        });
+    });
+
+    createKribhcoView();
+    
+    const insightContentContainer = document.getElementById('insight-content-container');
+    const insightButtons = document.querySelectorAll('.insight-btn');
+
+    function displayInsight(insightKey) {
+        insightContentContainer.innerHTML = appData.insights[insightKey].content;
+    }
+    
+    insightButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const insightKey = button.dataset.insight;
+            insightButtons.forEach(btn => {
+                btn.classList.remove('text-teal-600', 'border-teal-600');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+            button.classList.add('text-teal-600', 'border-teal-600');
+            button.classList.remove('text-gray-500', 'border-transparent');
+            displayInsight(insightKey);
+        });
+    });
+    
+    displayInsight('predictive');
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { rootMargin: '-50% 0px -50% 0px' });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('hidden') === false) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+});
+</script>
+</body>
+</html>

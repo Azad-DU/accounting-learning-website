@@ -802,3 +802,29 @@ header .container {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
+/* --- Special Style for Interactive Report --- */
+
+/* This styles the main link container */
+.feature-item.interactive-report {
+    background-color: #173c92; /* A vibrant green */
+    border: 2px solid #1e6b9f; /* Slightly darker green border */
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    text-decoration: none; /* Remove the default underline from the link */
+}
+
+.feature-item.interactive-report:hover {
+    background-color: #121690; /* Darker green on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(39, 118, 174, 0.5);
+}
+
+/* This specifically targets the H3 heading inside our special button */
+.feature-item.interactive-report h3 {
+    color: #ffffff; /* Make the heading text white */
+}
+
+/* This specifically targets the P paragraph inside our special button */
+.feature-item.interactive-report p {
+    color: #ffffff; /* Make the paragraph text white */
+    opacity: 0.9; /* Makes the text slightly transparent to look nice */
+}
