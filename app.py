@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 2. Initialize CORS *once* with the correct settings
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["http://localhost:5000", "http://127.0.0.1:5000", "file://"])
 
 # 3. Initialize the database
 db = SQLAlchemy(app)
@@ -124,11 +124,14 @@ def handle_contact_form():
 
 @app.route("/api/register", methods=['POST'])
 def register_user():
+    print("Registration endpoint called")
     # 1. Get the data from the incoming JSON request
     data = request.get_json()
+    print("Received data:", data)
 
     # 2. Basic validation to make sure all fields are present
     if not data or not all(k in data for k in ['username', 'email', 'password']):
+        print("Missing required fields")
         return jsonify({"error": "Missing username, email, or password"}), 400
 
     username = data['username']
@@ -137,10 +140,12 @@ def register_user():
 
     # 3. Check if the username or email already exists in the database
     if User.query.filter_by(username=username).first():
+        print(f"Username {username} already exists")
         # 409 is the HTTP status code for "Conflict"
         return jsonify({"error": "Username already exists"}), 409
 
     if User.query.filter_by(email=email).first():
+        print(f"Email {email} already exists")
         return jsonify({"error": "Email address already registered"}), 409
 
     # 4. If validation passes, create a new User instance
@@ -152,6 +157,7 @@ def register_user():
     # 6. Add the new user to the database session and commit to save it
     db.session.add(new_user)
     db.session.commit()
+    print(f"User {username} created successfully")
 
     # 7. Return a success response
     # 201 is the HTTP status code for "Created"
@@ -176,19 +182,26 @@ def view_messages():
 
 @app.route("/api/login", methods=['POST'])
 def login_user():
+    print("Login endpoint called")
     data = request.get_json()
+    print("Received login data:", data)
+    
     if not data or not data.get('username') or not data.get('password'):
+        print("Missing username or password")
         return jsonify({"error": "Missing username or password"}), 400
 
     user = User.query.filter_by(username=data.get('username')).first()
+    print(f"User found: {user is not None}")
 
     # Check if user exists and if the password hash matches
     if user and user.check_password(data.get('password')):
+        print(f"Login successful for user: {user.username}")
         # If credentials are correct, store user info in the session
         session['user_id'] = user.id
         session['username'] = user.username
         return jsonify({"message": f"Welcome back, {user.username}!"}), 200
     else:
+        print("Login failed - invalid credentials")
         # If credentials are bad, return an "Unauthorized" error
         return jsonify({"error": "Invalid username or password"}), 401 
 @app.route("/api/logout", methods=['POST'])
@@ -209,4 +222,4 @@ def check_session():
  
 # Note: We keep this part the same
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
