@@ -48,7 +48,7 @@ header nav ul li {
 }
 
 header nav ul li a {
-    color: #ffffff;
+    color: #ecf4f2;
     text-decoration: none;
     font-weight: 500;
     font-size: 1rem;
@@ -58,12 +58,12 @@ header nav ul li a {
 
 header nav ul li a:hover,
 header nav ul li a.active {
-    color: #3498db; /* A lighter blue for hover/active */
+    color: #28879f; /* A lighter blue for hover/active */
 }
 header nav ul li a.active {
-    color: #3498db; /* The existing light blue accent color */
+    color: #38b1be; /* The existing light blue accent color */
     font-weight: 700; /* Bolder text */
-    border-bottom: 2px solid #3498db; /* Underline effect */
+    border-bottom: 2px solid #71bbcc; /* Underline effect */
 }
 
 /* Dropdown Menu Styles */
@@ -74,7 +74,7 @@ header nav ul li a.active {
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    border-top: 3px solid #3498db;
+    border-top: 3px solid #191e86;
 }
 
 .dropdown-content a {
@@ -153,7 +153,7 @@ main {
 }
 
 .feature-item {
-    background-color: #ffffff;
+    background-color: #5cd4b8;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
