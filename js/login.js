@@ -28,6 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             statusDiv.className = 'form-status-success';
             statusDiv.textContent = data.message + " Redirecting...";
+            
+            // Store the session token if provided
+            if (data.session_token) {
+                localStorage.setItem('session_token', data.session_token);
+                console.log('Session token stored:', data.session_token);
+            }
+            
             // After a short delay, redirect to the homepage
             setTimeout(() => {
                 window.location.href = 'index.html';

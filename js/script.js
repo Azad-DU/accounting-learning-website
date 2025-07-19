@@ -28,25 +28,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 2. SESSION CHECK & DYNAMIC UI UPDATES ---
     // This is the core logic that runs on every page load to check login status.
-    fetch('http://localhost:5000/api/check_session', { credentials: 'include' })
+    console.log('Script.js loaded, checking session...');
+    console.log('Logged in elements found:', loggedInElements.length);
+    console.log('Logged out elements found:', loggedOutElements.length);
+    
+    // Get session token from localStorage
+    const sessionToken = localStorage.getItem('session_token');
+    console.log('Session token from localStorage:', sessionToken);
+    
+    const headers = { 'Content-Type': 'application/json' };
+    if (sessionToken) {
+        headers['X-Session-Token'] = sessionToken;
+    }
+    
+    fetch('http://localhost:5000/api/check_session', { 
+        credentials: 'include',
+        headers: headers
+    })
         .then(response => {
+            console.log('Session check response status:', response.status);
             if (!response.ok) {
                 console.error("Network response was not ok for session check");
             }
             return response.json();
         })
         .then(data => {
+            console.log('Session check data:', data);
             if (data.logged_in) {
                 // USER IS LOGGED IN
-                loggedInElements.forEach(el => el.style.display = 'inline-block');
-                loggedOutElements.forEach(el => el.style.display = 'none');
+                console.log('User is logged in, showing logout button...');
+                loggedInElements.forEach(el => {
+                    el.style.display = 'inline-block';
+                    console.log('Showing element:', el);
+                });
+                loggedOutElements.forEach(el => {
+                    el.style.display = 'none';
+                    console.log('Hiding element:', el);
+                });
                 if (usernameSpan) {
                     usernameSpan.textContent = `Welcome, ${data.username}`;
+                    console.log('Set username to:', data.username);
                 }
             } else {
                 // USER IS LOGGED OUT
-                loggedInElements.forEach(el => el.style.display = 'none');
-                loggedOutElements.forEach(el => el.style.display = 'inline-block');
+                console.log('User is logged out, hiding logout button...');
+                loggedInElements.forEach(el => {
+                    el.style.display = 'none';
+                    console.log('Hiding element:', el);
+                });
+                loggedOutElements.forEach(el => {
+                    el.style.display = 'inline-block';
+                    console.log('Showing element:', el);
+                });
 
                 // Show the login prompt modal once per browser session
                 if (!sessionStorage.getItem('loginPromptShown')) {
@@ -69,10 +102,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Logout Button
     if (logoutBtn) {
+        console.log('Logout button found, adding event listener...');
         logoutBtn.addEventListener('click', (event) => {
             event.preventDefault();
-            fetch('http://localhost:5000/api/logout', { method: 'POST', credentials: 'include' })
-                .then(() => {
+            console.log('Logout button clicked, making logout request...');
+            
+            const sessionToken = localStorage.getItem('session_token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (sessionToken) {
+                headers['X-Session-Token'] = sessionToken;
+            }
+            
+            fetch('http://localhost:5000/api/logout', { 
+                method: 'POST', 
+                credentials: 'include',
+                headers: headers
+            })
+                .then(response => {
+                    console.log('Logout response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Logout response data:', data);
+                    // Clear the session token from localStorage
+                    localStorage.removeItem('session_token');
                     alert('You have been logged out.');
                     // Handle redirection correctly based on the current page's location
                     if (window.location.pathname.includes('/topics/')) {
@@ -80,8 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         window.location.href = 'index.html';
                     }
+                })
+                .catch(error => {
+                    console.error('Logout error:', error);
+                    alert('Logout failed. Please try again.');
                 });
         });
+    } else {
+        console.log('Logout button not found!');
     }
 
     // Hamburger Menu
