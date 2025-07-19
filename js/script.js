@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headers['X-Session-Token'] = sessionToken;
     }
     
-    fetch('http://localhost:5000/api/check_session', { 
+    fetch(`${API_BASE_URL}/api/check_session`, { 
         credentials: 'include',
         headers: headers
     })
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers['X-Session-Token'] = sessionToken;
             }
             
-            fetch('http://localhost:5000/api/logout', { 
+            fetch(`${API_BASE_URL}/api/logout`, { 
                 method: 'POST', 
                 credentials: 'include',
                 headers: headers

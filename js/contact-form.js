@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // 4. Send the data to our back-end API using fetch()
-    fetch('http://localhost:5000/api/contact', {
+    fetch(`${API_BASE_URL}/api/contact`, {
       method: 'POST', // We are sending data, so we use the POST method
       headers: {
         'Content-Type': 'application/json', // Tell the server we're sending JSON

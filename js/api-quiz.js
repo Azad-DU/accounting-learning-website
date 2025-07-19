@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const apiUrl= `https://accounting-api-akazad.onrender.com/api/quiz/${topicId}`;
+  const apiUrl = `${API_BASE_URL}/api/quiz/${topicId}`;
   let quizQuestions = []; // Variable to store the questions with answers
 
   // 1. Fetch the quiz data from our Python API

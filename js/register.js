@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusDiv.textContent = 'Creating account...';
 
         // 2. Send the data to our back-end register API
-        fetch('http://localhost:5000/api/register', {
+        fetch(`${API_BASE_URL}/api/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password }),
