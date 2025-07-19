@@ -20,7 +20,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookies
 app.config['SESSION_COOKIE_DOMAIN'] = None  # Allow all domains
 
 # 2. Initialize CORS *once* with the correct settings
-CORS(app, supports_credentials=True, origins=["null", "https://accounting-learning-website.onrender.com", "http://localhost:3000", "http://127.0.0.1:5500"], methods=["GET", "POST", "OPTIONS"], allow_headers=["Content-Type", "X-Session-Token"])
+CORS(app, supports_credentials=True, origins=["null", "https://accounting-learning-site.onrender.com", "https://accounting-learning-website.onrender.com", "http://localhost:3000", "http://127.0.0.1:5500"], methods=["GET", "POST", "OPTIONS"], allow_headers=["Content-Type", "X-Session-Token"])
 
 # 3. Initialize the database
 db = SQLAlchemy(app)
@@ -134,12 +134,7 @@ def handle_contact_form():
 def register_user():
     # Handle preflight OPTIONS request
     if request.method == 'OPTIONS':
-        response = jsonify({'status': 'ok'})
-        response.headers.add('Access-Control-Allow-Origin', 'null')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, X-Session-Token')
-        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
+        return jsonify({'status': 'ok'})
     
     print("Registration endpoint called")
     # 1. Get the data from the incoming JSON request
@@ -201,12 +196,7 @@ def view_messages():
 def login_user():
     # Handle preflight OPTIONS request
     if request.method == 'OPTIONS':
-        response = jsonify({'status': 'ok'})
-        response.headers.add('Access-Control-Allow-Origin', 'null')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, X-Session-Token')
-        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
+        return jsonify({'status': 'ok'})
     
     print("Login endpoint called")
     data = request.get_json()
@@ -236,13 +226,11 @@ def login_user():
             "message": f"Welcome back, {user.username}!",
             "session_token": session_token
         })
-        response.headers.add('Access-Control-Allow-Origin', 'null')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response, 200
     else:
         print("Login failed - invalid credentials")
         # If credentials are bad, return an "Unauthorized" error
-        return jsonify({"error": "Invalid username or password"}), 401 
+        return jsonify({"error": "Invalid username or password"}), 401
 @app.route("/api/logout", methods=['POST'])
 def logout_user():
     # Get session token from request headers
@@ -255,8 +243,6 @@ def logout_user():
         print(f"Removed session. Active sessions: {active_sessions}")
     
     response = jsonify({"message": "Successfully logged out"})
-    response.headers.add('Access-Control-Allow-Origin', 'null')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response, 200
 # In app.py, add this new route
 
@@ -264,12 +250,7 @@ def logout_user():
 def check_session():
     # Handle preflight OPTIONS request
     if request.method == 'OPTIONS':
-        response = jsonify({'status': 'ok'})
-        response.headers.add('Access-Control-Allow-Origin', 'null')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, X-Session-Token')
-        response.headers.add('Access-Control-Allow-Methods', 'GET, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
+        return jsonify({'status': 'ok'})
     
     print("Check session called")
     
@@ -283,15 +264,11 @@ def check_session():
         user_data = active_sessions[session_token]
         print("User is logged in")
         response = jsonify({"logged_in": True, "username": user_data['username']})
-        response.headers.add('Access-Control-Allow-Origin', 'null')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response
     else:
         # If not, they are logged out.
         print("User is logged out")
         response = jsonify({"logged_in": False})
-        response.headers.add('Access-Control-Allow-Origin', 'null')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response               
  
 # Note: We keep this part the same
