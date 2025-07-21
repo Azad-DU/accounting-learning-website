@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #111827;
+    color: #F3F4F6;
+}
+.portfolio-landing, .content-page {
+    background: none;
+    box-shadow: none;
+    border: none;
+    color: #F3F4F6;
+}
+header, footer {
+    background-color: #1F2937;
+    color: #F3F4F6;
+}
+.portfolio-intro {
+    background: #1F2937;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(31, 41, 55, 0.18);
+    padding: 40px 60px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+.portfolio-profile {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);
+    border: 4px solid #38BDF8;
+    background: #1F2937;
+    transition: transform 0.4s cubic-bezier(.4,2,.6,1);
+}
+.portfolio-profile:hover {
+    transform: scale(1.07) rotate(-2deg);
+}
+.portfolio-summary h2, .content-page h2 {
+    color: #38BDF8;
+    font-size: 2.2rem;
+    margin-bottom: 18px;
+    font-weight: 900;
+}
+.portfolio-summary p, .content-page p {
+    color: #D1D5DB;
+    font-size: 1.1rem;
+    margin-bottom: 28px;
+}
+.portfolio-links .button {
+    margin-right: 18px;
+    margin-bottom: 10px;
+    background: #38BDF8;
+    color: #111827;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(56,189,248,0.08);
+    transition: background 0.3s, transform 0.2s;
+    padding: 12px 28px;
+}
+.portfolio-links .button:hover {
+    background: #0ea5e9;
+    color: #fff;
+    transform: translateY(-3px) scale(1.05);
+}
+/* Skills Section */
+.portfolio-skills-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.skill-item {
+    background: #1F2937;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(56, 189, 248, 0.10);
+    padding: 32px 24px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+.skill-item:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(56, 189, 248, 0.18);
+}
+.skill-icon {
+    font-size: 2.8rem;
+    color: #38BDF8;
+    margin-bottom: 12px;
+}
+.skill-name {
+    font-weight: 700;
+    color: #F3F4F6;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.skill-bar {
+    width: 100%;
+    height: 12px;
+    background: #374151;
+    border-radius: 6px;
+    margin: 12px 0 8px 0;
+    overflow: hidden;
+    position: relative;
+}
+.skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #38BDF8 0%, #0ea5e9 100%);
+    border-radius: 6px;
+    transition: width 1.2s cubic-bezier(.4,2,.6,1);
+}
+.skill-desc {
+    color: #A1A1AA;
+    font-size: 0.98rem;
+    text-align: center;
+    margin-top: 8px;
+}
+/* Photos Grid */
+.portfolio-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.portfolio-photo {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(56, 189, 248, 0.10);
+    background: #1F2937;
+    transition: transform 0.5s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+}
+.portfolio-photo:hover {
+    transform: scale(1.04) rotate(1deg);
+    box-shadow: 0 8px 32px rgba(56, 189, 248, 0.18);
+}
+/* Achievements List */
+.portfolio-achievements-list {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+.achievement-item {
+    background: #1F2937;
+    border-left: 6px solid #38BDF8;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.10);
+    padding: 28px 32px;
+    animation: slideIn 1s;
+}
+.achievement-item h3 {
+    color: #38BDF8;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+.achievement-item p {
+    color: #D1D5DB;
+    margin-bottom: 0;
+}
+/* Animations */
+.animated-fadein {
+    animation: fadeIn 1.2s;
+}
+.animated-slidein {
+    animation: slideIn 1.2s;
+}
+.animated-bounce {
+    animation: bounceIn 1s;
+}
+.animated-zoom {
+    animation: zoomIn 1.1s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes bounceIn {
+    0% { transform: scale(0.8); }
+    60% { transform: scale(1.05); }
+    80% { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}
+@keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+/* Responsive */
+@media (max-width: 900px) {
+    .portfolio-intro {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 24px;
+    }
+}
+@media (max-width: 600px) {
+    .portfolio-intro {
+        padding: 18px 5px;
+    }
+    .portfolio-profile {
+        width: 120px;
+        height: 120px;
+    }
+    .portfolio-summary h2 {
+        font-size: 1.3rem;
+    }
+    .portfolio-photos-grid {
+        gap: 16px;
+    }
+    .achievement-item {
+        padding: 16px 10px;
+    }
+} 
