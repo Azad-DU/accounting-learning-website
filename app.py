@@ -20,7 +20,13 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookies
 app.config['SESSION_COOKIE_DOMAIN'] = None  # Allow all domains
 
 # 2. Initialize CORS *once* with the correct settings
-CORS(app, supports_credentials=True, origins=["null", "https://accounting-learning-site.onrender.com", "https://accounting-learning-website.onrender.com", "http://localhost:3000", "http://127.0.0.1:5500"], methods=["GET", "POST", "OPTIONS"], allow_headers=["Content-Type", "X-Session-Token"])
+CORS(app, supports_credentials=True, origins=[
+    "null",
+    "https://learn-with-ak.onrender.com",
+    "https://accounting-learning-website.onrender.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:5500"
+], methods=["GET", "POST", "OPTIONS"], allow_headers=["Content-Type", "X-Session-Token"])
 
 # 3. Initialize the database
 db = SQLAlchemy(app)
