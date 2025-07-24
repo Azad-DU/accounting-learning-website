@@ -1,69 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Accounting Fundamentals</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neumorphic Auth Form</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .neumorphic-base {
+      background: #e0e5ec;
+      box-shadow: 10px 10px 30px #bec3c9, -10px -10px 30px #ffffff;
+    }
+    .neumorphic-inset {
+      background: #e0e5ec;
+      box-shadow: inset 5px 5px 10px #bec3c9, inset -5px -5px 10px #ffffff;
+    }
+    .neumorphic-active {
+      background: linear-gradient(145deg, #d1d9e6, #ffffff);
+      box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff;
+    }
+    .neumorphic-button {
+      background: #e0e5ec;
+      box-shadow: 5px 5px 10px #bec3c9, -5px -5px 10px #ffffff;
+    }
+    .neumorphic-input {
+      background: #e0e5ec;
+      box-shadow: inset 3px 3px 6px #bec3c9, inset -3px -3px 6px #ffffff;
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1><a href="index.html" style="color:white; text-decoration: none;">Accounting Fundamentals</a></h1>
-            
-            <button id="hamburger-btn" aria-label="Open navigation menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-            
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="topics/basic-accounting-equation.html">Topics</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="#" id="view-progress">View Progress</a></li>
-                    
-                    <li class="logged-out"><a href="register.html">Register</a></li>
-                    <li class="logged-out"><a href="login.html" id="login-btn">Login</a></li>
-                    
-                    <li class="logged-in" style="display: none;">
-                        <span id="nav-username" style="color: white; padding: 10px 18px;"></span>
-                    </li>
-                    <li class="logged-in" style="display: none;">
-                        <a href="#" id="logout-btn">Logout</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container content-page">
-        <h2>Login to Your Account</h2>
-        <div class="auth-form-container">
-            <form id="login-form" class="contact-form">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="button">Login</button>
-            </form>
-            <div id="form-status" style="margin-top: 20px;"></div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Accounting Fundamentals. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="js/config.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/login.js"></script>
-
+<body class="bg-[#e0e5ec] flex justify-center items-center min-h-screen p-4">
+  <div class="container neumorphic-base w-full max-w-sm p-8 rounded-3xl">
+    <div class="tabs flex justify-between mb-6">
+      <button id="loginBtn" class="flex-1 py-2 mx-1 border-none rounded-2xl neumorphic-active font-bold cursor-pointer text-gray-700 transition-all duration-300">Login</button>
+      <button id="registerBtn" class="flex-1 py-2 mx-1 border-none rounded-2xl neumorphic-inset font-bold cursor-pointer text-gray-700 transition-all duration-300">Register</button>
+    </div>
+    <div id="messageBox" class="hidden p-3 mb-4 rounded-lg text-center text-sm font-medium" role="alert"></div>
+    <div id="loginForm" class="form-section">
+      <div class="input-group mb-4">
+        <label for="loginEmail" class="block mb-1 text-sm text-gray-700">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" class="w-full p-2 rounded-xl border-none neumorphic-input text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      </div>
+      <div class="input-group mb-6">
+        <label for="loginPassword" class="block mb-1 text-sm text-gray-700">Password</label>
+        <input type="password" id="loginPassword" class="w-full p-2 rounded-xl border-none neumorphic-input text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      </div>
+      <button onclick="handleLogin()" class="w-full py-3 border-none rounded-2xl neumorphic-button font-bold cursor-pointer text-gray-700 transition-all duration-300 hover:neumorphic-inset">
+        <span class="mr-2">🔑</span> Login
+      </button>
+    </div>
+    <div id="registerForm" class="form-section hidden">
+      <div class="input-group mb-4">
+        <label for="registerName" class="block mb-1 text-sm text-gray-700">Full Name</label>
+        <input type="text" id="registerName" placeholder="John Doe" class="w-full p-2 rounded-xl border-none neumorphic-input text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      </div>
+      <div class="input-group mb-4">
+        <label for="registerEmail" class="block mb-1 text-sm text-gray-700">Email</label>
+        <input type="email" id="registerEmail" placeholder="you@example.com" class="w-full p-2 rounded-xl border-none neumorphic-input text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      </div>
+      <div class="input-group mb-4">
+        <label for="registerPassword" class="block mb-1 text-sm text-gray-700">Password</label>
+        <input type="password" id="registerPassword" class="w-full p-2 rounded-xl border-none neumorphic-input text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      </div>
+      <div class="input-group mb-6">
+        <label for="registerConfirmPassword" class="block mb-1 text-sm text-gray-700">Confirm Password</label>
+        <input type="password" id="registerConfirmPassword" class="w-full p-2 rounded-xl border-none neumorphic-input text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      </div>
+      <button onclick="handleRegister()" class="w-full py-3 border-none rounded-2xl neumorphic-button font-bold cursor-pointer text-gray-700 transition-all duration-300 hover:neumorphic-inset">
+        <span class="mr-2">👤➕</span> Register
+      </button>
+    </div>
+    <div class="or text-center mt-6 text-sm text-gray-500">Or sign up with</div>
+    <div class="social flex justify-center gap-4 mt-4">
+      <div class="social-icon w-10 h-10 neumorphic-button rounded-full flex justify-center items-center cursor-pointer text-lg text-gray-700 transition-all duration-300 hover:neumorphic-inset">
+        <span>G</span>
+      </div>
+      <div class="social-icon w-10 h-10 neumorphic-button rounded-full flex justify-center items-center cursor-pointer text-lg text-gray-700 transition-all duration-300 hover:neumorphic-inset">
+        <span>f</span>
+      </div>
+      <div class="social-icon w-10 h-10 neumorphic-button rounded-full flex justify-center items-center cursor-pointer text-lg text-gray-700 transition-all duration-300 hover:neumorphic-inset">
+        <span>🐦</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Get references to elements
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const messageBox = document.getElementById('messageBox');
+    function showMessage(message, type = 'info') {
+      messageBox.textContent = message;
+      messageBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-blue-100', 'text-blue-700');
+      if (type === 'error') {
+        messageBox.classList.add('bg-red-100', 'text-red-700');
+      } else if (type === 'success') {
+        messageBox.classList.add('bg-green-100', 'text-green-700');
+      } else {
+        messageBox.classList.add('bg-blue-100', 'text-blue-700');
+      }
+      messageBox.classList.remove('hidden');
+    }
+    function hideMessage() {
+      messageBox.classList.add('hidden');
+    }
+    loginBtn.addEventListener('click', () => {
+      loginBtn.classList.add('neumorphic-active');
+      loginBtn.classList.remove('neumorphic-inset');
+      registerBtn.classList.remove('neumorphic-active');
+      registerBtn.classList.add('neumorphic-inset');
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+      hideMessage();
+    });
+    registerBtn.addEventListener('click', () => {
+      registerBtn.classList.add('neumorphic-active');
+      registerBtn.classList.remove('neumorphic-inset');
+      loginBtn.classList.remove('neumorphic-active');
+      loginBtn.classList.add('neumorphic-inset');
+      registerForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      hideMessage();
+    });
+    function handleRegister() {
+      const name = document.getElementById('registerName').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      if (!name || !email || !password || !confirmPassword) {
+        showMessage("Please fill out all fields.", 'error');
+        return;
+      }
+      if (password !== confirmPassword) {
+        showMessage("Passwords do not match.", 'error');
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showMessage("Please enter a valid email address.", 'error');
+        return;
+      }
+      if (password.length < 6) {
+        showMessage("Password must be at least 6 characters long.", 'error');
+        return;
+      }
+      showMessage(`Welcome ${name}! Registration successful.`, 'success');
+    }
+    function handleLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) {
+        showMessage("Please enter your email and password.", 'error');
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showMessage("Please enter a valid email address.", 'error');
+        return;
+      }
+      if (email === "test@example.com" && password === "password123") {
+        showMessage("Login successful! Welcome back.", 'success');
+      } else {
+        showMessage("Invalid email or password.", 'error');
+      }
+    }
+  </script>
 </body>
 </html>

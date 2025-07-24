@@ -7,13 +7,89 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/portfolio.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Styles for the Hamburger Button */
+        .hamburger-button {
+            display: none; /* Hidden by default on larger screens */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .hamburger-icon {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #d6f1d4;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px; /* Slightly rounded corners for the lines */
+        }
+
+        /* Responsive adjustments for navigation */
+        @media (max-width: 768px) { /* This breakpoint can be adjusted as needed */
+            /* Show hamburger on small screens */
+            .hamburger-button {
+                display: block;
+            }
+
+            /* Adjust header container to properly align title and hamburger */
+            header .container {
+                position: relative; /* Needed for absolute positioning of hamburger */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-right: 20px; /* Add some padding to the right for the button */
+            }
+
+            /* Hide navigation by default on small screens */
+            header .container nav ul#main-nav-list {
+                display: none;
+                flex-direction: column; /* Stack links vertically */
+                width: 100%;
+                position: absolute; /* Position as an overlay */
+                top: 60px; /* Adjust based on your header height */
+                left: 0;
+                background-color: hsl(178, 37%, 19%);
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                padding: 10px 0;
+                text-align: center;
+                border-radius: 8px; /* Rounded corners for the menu box */
+            }
+
+            /* Show navigation when 'nav-active' class is present */
+            header .container nav ul#main-nav-list.nav-active {
+                display: flex;
+            }
+
+            /* Adjust list item margins for vertical layout */
+            header .container nav ul#main-nav-list li {
+                margin: 10px 0;
+            }
+
+            /* Ensure nav-slider doesn't interfere with the absolute positioning */
+            header .container nav #nav-slider {
+                /* The nav-slider was not present in the original skills page HTML,
+                   but keeping this rule for consistency if it were added later. */
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>Portfolio Skills</h1>
             <nav>
-                <ul>
+                <!-- Hamburger Button -->
+                <button class="hamburger-button" id="hamburger-button" aria-label="Toggle navigation">
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                </button>
+                <ul id="main-nav-list">
                     <li><a href="portfolio.html">Portfolio Home</a></li>
                     <li><a href="portfolio-photos.html">Photos</a></li>
                     <li><a href="portfolio-skills.html" class="active">Skills</a></li>
@@ -63,5 +139,28 @@
         </div>
     </footer>
     <script src="js/portfolio-animations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mainNavList = document.getElementById('main-nav-list');
+
+            if (hamburgerButton && mainNavList) {
+                hamburgerButton.addEventListener('click', function() {
+                    mainNavList.classList.toggle('nav-active');
+                    // Optional: Add/remove a class to the hamburger button for animation (e.g., X icon)
+                    // hamburgerButton.classList.toggle('is-active');
+                });
+
+                // Optional: Close menu when a link is clicked (for single-page navigation)
+                mainNavList.querySelectorAll('a').forEach(link => { // Changed from .nav-link to 'a' as your skills page doesn't use nav-link class
+                    link.addEventListener('click', () => {
+                        if (mainNavList.classList.contains('nav-active')) {
+                            mainNavList.classList.remove('nav-active');
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
-</html> 
+</html>

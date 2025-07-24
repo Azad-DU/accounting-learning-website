@@ -13,7 +13,13 @@
         <div class="container">
             <h1>Portfolio Photos</h1>
             <nav>
-                <ul>
+                <!-- Hamburger Button -->
+                <button class="hamburger-button" id="hamburger-button" aria-label="Toggle navigation">
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                </button>
+                <ul id="main-nav-list">
                     <li><a href="portfolio.html">Portfolio Home</a></li>
                     <li><a href="portfolio-photos.html" class="active">Photos</a></li>
                     <li><a href="portfolio-skills.html">Skills</a></li>
@@ -37,5 +43,49 @@
         </div>
     </footer>
     <script src="js/portfolio-animations.js"></script>
+    <style>
+        .hamburger-button {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .hamburger-icon {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #d6f1d4;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        @media (max-width: 768px) {
+            .hamburger-button { display: block; }
+            header .container { position: relative; display: flex; justify-content: space-between; align-items: center; padding-right: 20px; }
+            header .container nav ul#main-nav-list { display: none; flex-direction: column; width: 100%; position: absolute; top: 60px; left: 0; background-color: hsl(178, 37%, 19%); box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 10px 0; text-align: center; border-radius: 8px; }
+            header .container nav ul#main-nav-list.nav-active { display: flex; }
+            header .container nav ul#main-nav-list li { margin: 10px 0; }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mainNavList = document.getElementById('main-nav-list');
+            if (hamburgerButton && mainNavList) {
+                hamburgerButton.addEventListener('click', function() {
+                    mainNavList.classList.toggle('nav-active');
+                });
+                mainNavList.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (mainNavList.classList.contains('nav-active')) {
+                            mainNavList.classList.remove('nav-active');
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html> 

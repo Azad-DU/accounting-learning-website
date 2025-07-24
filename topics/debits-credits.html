@@ -7,33 +7,6 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Accounting Fundamentals</h1>
-            <button id="hamburger-btn" aria-label="Open navigation menu">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </button>
-            <nav>
-    <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="basic-accounting-equation.html">Topics</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-        
-        <li class="logged-out"><a href="../register.html">Register</a></li>
-        <li class="logged-out"><a href="../login.html" id="login-btn">Login</a></li>
-        
-        <li class="logged-in" style="display: none;">
-            <span id="nav-username" style="color: white; padding: 10px 18px;"></span>
-        </li>
-        <li class="logged-in" style="display: none;">
-            <a href="#" id="logout-btn">Logout</a>
-        </li>
-    </ul>
-</nav>
-        </div>
-    </header>
-
     <main class="container topic-page">
         <h2>Understanding Debits & Credits</h2>
         <p>Debits (Dr) and Credits (Cr) are the two fundamental aspects of every financial transaction in the double-entry accounting system. They are used to record changes in the value of accounts.</p>
@@ -83,13 +56,11 @@
             <a href="financial-statements.html" class="button next-button">Next Topic: Financial Statements &rarr;</a>
         </nav>
     </main>
-
     <footer>
         <div class="container">
             <p>&copy; 2025 Accounting Fundamentals. All rights reserved.</p>
         </div>
     </footer>
-
     <div id="progress-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -98,10 +69,9 @@
                 </div>
         </div>
     </div>
-
     <script src="../js/config.js"></script>
     <script src="../js/script.js"></script>
-    <script src="../js/diagram.js"></script>
     <script src="../js/api-quiz.js"></script>
+    <script src="../js/diagram.js"></script>
 </body>
 </html>
