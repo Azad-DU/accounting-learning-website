@@ -3,29 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn accounting with interactive lessons, quizzes, and more.">
     <title>Accounting Fundamentals - Home</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2563eb', // blue-600
+              accent: '#38bdf8', // sky-400
+              dark: '#34495e',
+            }
+          }
+        }
+      }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
-    <header class="bg-[#34495e] text-white shadow-md">
+    <header class="bg-dark text-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto flex items-center justify-between py-4 px-6">
-            <h1 class="text-2xl font-bold">Accounting Fundamentals</h1>
-            <!-- Hamburger Menu Button -->
-            <div class="lg:hidden">
-                <button id="menu-button" class="text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
+            <div class="flex items-center space-x-3">
+                <img src="/images/logo.png" alt="AK Azad Logo" class="w-12 h-12 rounded-full border-2 border-accent shadow bg-white object-contain p-1">
+                <span class="text-2xl font-extrabold tracking-tight">Learn with AK</span>
             </div>
-            <!-- Desktop Navigation -->
-            <nav class="hidden lg:flex items-center relative">
+            <button id="hamburger-btn" class="md:hidden ml-4 p-2 rounded focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Open navigation menu"><!-- Mobile nav logic in spa.js --><svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/></svg></button>
+            <nav class="relative hidden md:block">
                 <div id="nav-slider" class="absolute bottom-0 left-0 h-1 bg-sky-400 rounded transition-all duration-300" style="width: 0;"></div>
                 <ul class="flex space-x-4 font-semibold text-lg">
                     <li><a href="#home" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200">Home</a></li>
                     <li class="relative group">
-                        <a href="#topics" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200 flex items-center">Topics <svg class="ml-2 w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></a>
+                        <a href="#topics" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200 flex items-center" aria-haspopup="true" aria-expanded="false">Topics <svg class="ml-2 w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></a>
                         <ul class="absolute left-0 top-full mt-2 w-64 bg-white text-gray-800 font-semibold rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50">
                             <li><a href="#topic-basic-accounting-equation" class="block px-6 py-3 hover:bg-sky-100">Basic Accounting Equation</a></li>
                             <li><a href="#topic-debits-credits" class="block px-6 py-3 hover:bg-sky-100">Debits & Credits</a></li>
@@ -36,100 +47,54 @@
                     </li>
                     <li><a href="#about" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200">About</a></li>
                     <li><a href="#contact" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200">Contact</a></li>
-                    <li><a href="portfolio.html" class="py-2 px-6 rounded-lg transition-colors duration-200">Portfolio</a></li>
+                    <li><a href="portfolio.html" class="py-2 px-6 rounded-lg transition-colors duration-200" target="_blank" rel="noopener">Portfolio</a></li>
                     <li><a href="#register" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200">Register</a></li>
                     <li><a href="#login" class="nav-link py-2 px-6 rounded-lg transition-colors duration-200">Login</a></li>
                 </ul>
             </nav>
-        </div>
-        <!-- Mobile Navigation -->
-        <div id="mobile-menu" class="lg:hidden hidden">
-            <ul class="flex flex-col items-center space-y-2 py-4 font-semibold text-lg">
-                <li><a href="#home" class="nav-link-mobile py-2 px-6 rounded-lg transition-colors duration-200 block">Home</a></li>
-                <li class="relative group w-full text-center">
-                    <a href="#topics" class="nav-link-mobile py-2 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">Topics <svg class="ml-2 w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></a>
-                    <ul class="bg-gray-700 text-white font-semibold rounded-lg shadow-lg hidden group-hover:block w-full">
-                        <li><a href="#topic-basic-accounting-equation" class="block px-6 py-3 hover:bg-sky-500">Basic Accounting Equation</a></li>
-                        <li><a href="#topic-debits-credits" class="block px-6 py-3 hover:bg-sky-500">Debits & Credits</a></li>
-                        <li><a href="#topic-financial-statements" class="block px-6 py-3 hover:bg-sky-500">Financial Statements</a></li>
-                        <li><a href="#topic-journal-entry" class="block px-6 py-3 hover:bg-sky-500">Journal Entry</a></li>
-                        <li><a href="#topic-financial-ratio-analysis" class="block px-6 py-3 hover:bg-sky-500">Ratio Analysis</a></li>
-                    </ul>
-                </li>
-                <li><a href="#about" class="nav-link-mobile py-2 px-6 rounded-lg transition-colors duration-200 block">About</a></li>
-                <li><a href="#contact" class="nav-link-mobile py-2 px-6 rounded-lg transition-colors duration-200 block">Contact</a></li>
-                <li><a href="portfolio.html" class="py-2 px-6 rounded-lg transition-colors duration-200 block">Portfolio</a></li>
-                <li><a href="#register" class="nav-link-mobile py-2 px-6 rounded-lg transition-colors duration-200 block">Register</a></li>
-                <li><a href="#login" class="nav-link-mobile py-2 px-6 rounded-lg transition-colors duration-200 block">Login</a></li>
-            </ul>
+            <!-- Mobile nav will be injected by JS -->
         </div>
     </header>
     <main class="container mx-auto px-6 py-8">
-        <div id="spa-content" class="bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-3xl font-bold mb-4 text-gray-800">Welcome to Accounting Fundamentals</h2>
-            <p class="text-gray-600 leading-relaxed">
-                This is a placeholder for your single-page application content. Use the navigation above to explore different sections.
-                The content for each section will be loaded dynamically here. Resize your browser window to see the responsive hamburger menu in action.
-            </p>
-        </div>
+        <section class="bg-gradient-to-r from-sky-500 to-blue-700 text-white py-20 text-center rounded-2xl shadow mb-12 animate-fade-in">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight drop-shadow-lg">Learn Accounting with AK</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto font-normal leading-relaxed">Master the fundamentals of accounting with interactive lessons, real-world examples, and a supportive learning community.</p>
+            <a href="#register" class="inline-block bg-white text-sky-700 font-bold px-8 py-3 rounded-lg shadow-lg hover:bg-sky-100 focus:outline-none focus:ring-4 focus:ring-sky-300 transition-all duration-300 text-lg">Get Started</a>
+        </section>
+        <div class="my-12 border-t-2 border-gray-200"></div>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition-all duration-300 animate-fade-in">
+                <h3 class="text-xl font-bold text-sky-700 mb-2">Interactive Lessons</h3>
+                <p class="text-gray-600">Engage with concepts through clear explanations and examples.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition-all duration-300 animate-fade-in" style="animation-delay: 100ms;">
+                <h3 class="text-xl font-bold text-sky-700 mb-2">Practical Quizzes</h3>
+                <p class="text-gray-600">Test your knowledge and reinforce your understanding.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition-all duration-300 animate-fade-in" style="animation-delay: 200ms;">
+                <h3 class="text-xl font-bold text-sky-700 mb-2">Visual Diagrams</h3>
+                <p class="text-gray-600">Understand complex ideas with easy-to-follow interactive visuals.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition-all duration-300 animate-fade-in" style="animation-delay: 300ms;">
+                <h3 class="text-xl font-bold text-sky-700 mb-2">Track Your Progress</h3>
+                <p class="text-gray-600">Monitor your learning journey and see your achievements.</p>
+            </div>
+        </section>
+        <div class="my-12 border-t-2 border-gray-200"></div>
+        <div id="spa-content"></div>
     </main>
-    <footer class="bg-[#34495e] text-white text-center py-4 mt-8">
+    <footer class="bg-dark text-white text-center py-4 mt-8">
         <div class="container mx-auto">
             <p>&copy; 2025 Accounting Fundamentals. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        // JavaScript to toggle the mobile menu
-        const menuButton = document.getElementById('menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        menuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Optional: Close the mobile menu when a link is clicked
-        const mobileNavLinks = document.querySelectorAll('#mobile-menu a');
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                // Check if the link is a dropdown toggle
-                if (!link.nextElementSibling || !link.nextElementSibling.classList.contains('group-hover:block')) {
-                     mobileMenu.classList.add('hidden');
-                }
-            });
-        });
-
-        // Logic for the navigation slider underline effect on desktop
-        const navLinks = document.querySelectorAll('.nav-link');
-        const navSlider = document.getElementById('nav-slider');
-
-        function updateSlider(element) {
-            if (element && navSlider) {
-                navSlider.style.width = `${element.offsetWidth}px`;
-                navSlider.style.left = `${element.offsetLeft}px`;
-            }
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => updateSlider(link));
-        });
-
-        // Set initial slider position
-        const initialActiveLink = document.querySelector('.nav-link'); // Default to first link
-        if (initialActiveLink) {
-            // A small delay to ensure rendering is complete
-            setTimeout(() => updateSlider(initialActiveLink), 100);
-        }
-
-        // Reset slider when mouse leaves the navigation area
-        const nav = document.querySelector('nav.hidden.lg\\:flex');
-        if(nav){
-            nav.addEventListener('mouseleave', () => {
-                 // You can either hide it or move it back to the active link
-                 updateSlider(document.querySelector('.nav-link'));
-            });
-        }
-
-    </script>
+    <script src="js/spa.js"></script>
+    <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fade-in 1s both; }
+    </style>
 </body>
 </html>
