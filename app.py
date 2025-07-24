@@ -5,6 +5,9 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy # [# 1. IMPORT SQLAlchemy]
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.contrib.facebook import make_facebook_blueprint, facebook
+from flask import redirect, url_for
 
 # The clean and correct configuration block
 
@@ -148,38 +151,32 @@ def register_user():
     print("Received data:", data)
 
     # 2. Basic validation to make sure all fields are present
-    if not data or not all(k in data for k in ['username', 'email', 'password']):
+    if not data or not all(k in data for k in ['username', 'password']):
         print("Missing required fields")
-        return jsonify({"error": "Missing username, email, or password"}), 400
+        return jsonify({"error": "Missing username or password"}), 400
 
     username = data['username']
-    email = data['email']
     password = data['password']
+    email = f"{username}@dummy.local"  # Generate a dummy email
 
     # 3. Check if the username or email already exists in the database
     if User.query.filter_by(username=username).first():
         print(f"Username {username} already exists")
-        # 409 is the HTTP status code for "Conflict"
         return jsonify({"error": "Username already exists"}), 409
 
     if User.query.filter_by(email=email).first():
         print(f"Email {email} already exists")
-        return jsonify({"error": "Email address already registered"}), 409
+        return jsonify({"error": "Username already exists (email conflict)"}), 409
 
     # 4. If validation passes, create a new User instance
     new_user = User(username=username, email=email)
-
-    # 5. Set the hashed password using the secure method from our model
     new_user.set_password(password)
-
-    # 6. Add the new user to the database session and commit to save it
     db.session.add(new_user)
     db.session.commit()
     print(f"User {username} created successfully")
 
-    # 7. Return a success response
-    # 201 is the HTTP status code for "Created"
-    return jsonify({"message": f"User '{username}' created successfully!"}), 201   
+    return jsonify({"message": f"User '{username}' created successfully!"}), 201
+
 # --- TEMPORARY ROUTE TO VIEW MESSAGES ---
 @app.route("/api/messages")
 def view_messages():
@@ -280,3 +277,83 @@ def check_session():
 # Note: We keep this part the same
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+# Google OAuth setup
+google_bp = make_google_blueprint(
+    client_id="YOUR_GOOGLE_CLIENT_ID",
+    client_secret="YOUR_GOOGLE_CLIENT_SECRET",
+    scope=["profile", "email"],
+    redirect_url="/login/google/authorized"
+)
+app.register_blueprint(google_bp, url_prefix="/login")
+
+# Facebook OAuth setup
+facebook_bp = make_facebook_blueprint(
+    client_id="YOUR_FACEBOOK_APP_ID",
+    client_secret="YOUR_FACEBOOK_APP_SECRET",
+    scope=["email"],
+    redirect_url="/login/facebook/authorized"
+)
+app.register_blueprint(facebook_bp, url_prefix="/login")
+
+@app.route("/login/google/authorized")
+def google_authorized():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v2/userinfo")
+    user_info = resp.json()
+    email = user_info.get("email")
+    username = user_info.get("name") or (email.split("@")[0] if email else None)
+    if not email:
+        return jsonify({"error": "Google account did not provide an email."}), 400
+
+    # Check if user exists
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        # Create a new user (no password, mark as social login)
+        user = User(username=username, email=email)
+        user.password_hash = ""  # No password for social login
+        db.session.add(user)
+        db.session.commit()
+
+    # Create a session token
+    session_token = str(uuid.uuid4())
+    active_sessions[session_token] = {
+        'user_id': user.id,
+        'username': user.username
+    }
+    return jsonify({
+        "message": f"Welcome, {user.username} (Google)!",
+        "session_token": session_token
+    })
+
+@app.route("/login/facebook/authorized")
+def facebook_authorized():
+    if not facebook.authorized:
+        return redirect(url_for("facebook.login"))
+    resp = facebook.get("/me?fields=id,name,email")
+    user_info = resp.json()
+    email = user_info.get("email")
+    username = user_info.get("name") or (email.split("@")[0] if email else None)
+    if not email:
+        return jsonify({"error": "Facebook account did not provide an email."}), 400
+
+    # Check if user exists
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        # Create a new user (no password, mark as social login)
+        user = User(username=username, email=email)
+        user.password_hash = ""  # No password for social login
+        db.session.add(user)
+        db.session.commit()
+
+    # Create a session token
+    session_token = str(uuid.uuid4())
+    active_sessions[session_token] = {
+        'user_id': user.id,
+        'username': user.username
+    }
+    return jsonify({
+        "message": f"Welcome, {user.username} (Facebook)!",
+        "session_token": session_token
+    })

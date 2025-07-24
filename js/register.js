@@ -8,11 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // Stop the page from reloading
 
         const username = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('password-confirm').value;
 
         // 1. Client-side validation: Check if passwords match
+        if (!username || !password || !confirmPassword) {
+            statusDiv.className = 'form-status-error';
+            statusDiv.textContent = 'Please fill out all fields!';
+            return;
+        }
         if (password !== confirmPassword) {
             statusDiv.className = 'form-status-error';
             statusDiv.textContent = 'Passwords do not match!';
@@ -26,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`${API_BASE_URL}/api/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, password }),
+            body: JSON.stringify({ username, password }),
             credentials:'include'
         })
         .then(async response => {

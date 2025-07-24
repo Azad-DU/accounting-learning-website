@@ -223,3 +223,72 @@ header, footer {
         padding: 16px 10px;
     }
 } 
+/* --- Hamburger & Dropdown Mobile Styles --- */
+@media (max-width: 768px) {
+  .hamburger-button {
+    display: block;
+    position: relative;
+    z-index: 1101;
+  }
+  header .container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
+    width: 100%;
+  }
+  /* Overlay for dropdown */
+  #nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20,30,30,0.7);
+    z-index: 1100;
+  }
+  #nav-overlay.active {
+    display: block;
+  }
+  header .container nav ul#main-nav-list {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: auto;
+    background-color: #1f4241;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    padding: 24px 0 12px 0;
+    text-align: center;
+    border-radius: 0 0 18px 18px;
+    z-index: 1102;
+    animation: slideDownNav 0.35s cubic-bezier(.4,2,.6,1);
+  }
+  header .container nav ul#main-nav-list.nav-active {
+    display: flex;
+  }
+  header .container nav ul#main-nav-list li {
+    margin: 16px 0;
+  }
+  header .container nav ul#main-nav-list li a {
+    font-size: 1.2rem;
+    color: #d6f1d4;
+    padding: 12px 0;
+    display: block;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  header .container nav ul#main-nav-list li a.active,
+  header .container nav ul#main-nav-list li a:hover {
+    background: #38bdf8;
+    color: #1f4241;
+  }
+  header .container nav #nav-slider {
+    display: none;
+  }
+}
+@keyframes slideDownNav {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+} 

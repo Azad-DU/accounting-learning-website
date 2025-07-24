@@ -53,7 +53,7 @@
                 position: absolute; /* Position as an overlay */
                 top: 60px; /* Adjust based on your header height */
                 left: 0;
-                background-color: hsl(178, 37%, 19%); /* Background for the dropdown menu */
+                background-color: #1f4241; /* Background for the dropdown menu */
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
                 padding: 10px 0;
                 text-align: center;
@@ -101,6 +101,7 @@
                 </ul>
             </nav>
         </div>
+        <div id="nav-overlay"></div>
     </header>
     <main class="container content-page portfolio-landing">
         <section class="portfolio-intro">
@@ -126,10 +127,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerButton = document.getElementById('hamburger-button');
             const mainNavList = document.getElementById('main-nav-list');
+            const navOverlay = document.getElementById('nav-overlay');
 
             if (hamburgerButton && mainNavList) {
                 hamburgerButton.addEventListener('click', function() {
                     mainNavList.classList.toggle('nav-active');
+                    navOverlay.classList.toggle('active');
                     // Optional: Add/remove a class to the hamburger button for animation (e.g., X icon)
                     // hamburgerButton.classList.toggle('is-active');
                 });
@@ -139,6 +142,7 @@
                     link.addEventListener('click', () => {
                         if (mainNavList.classList.contains('nav-active')) {
                             mainNavList.classList.remove('nav-active');
+                            navOverlay.classList.remove('active');
                         }
                     });
                 });
