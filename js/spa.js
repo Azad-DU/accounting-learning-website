@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p class="text-lg text-gray-700 mb-8">Master the fundamentals of accounting with interactive lessons, quizzes, and diagrams designed for students.</p>
                 <a href="topics/basic-accounting-equation.html" class="inline-block bg-sky-500 text-white font-semibold px-8 py-3 rounded-lg shadow hover:bg-sky-600 transition mb-4">Start Learning</a>
                 <a href="topics/financial-ratio-analysis.html" class="inline-block bg-sky-500 text-white font-semibold px-8 py-3 rounded-lg shadow hover:bg-sky-600 transition ml-4 mb-4">Ratio Analysis Article</a>
+                <a href="topics/macroeconomics.html" class="inline-block bg-sky-500 text-white font-semibold px-8 py-3 rounded-lg shadow hover:bg-sky-600 transition ml-4 mb-4">Understanding Macroeconomics</a>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
                     <div class="bg-white rounded-lg shadow p-6">
                         <h3 class="text-xl font-bold text-sky-700 mb-2">Interactive Lessons</h3>

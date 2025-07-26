@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Anatomy of a Modern Economy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #4A5568;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <header class="bg-[#073B4C] text-white p-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2">The Anatomy of a Modern Economy: A Visual Guide</h1>
+        <p class="text-lg text-gray-300">Understanding the key drivers and indicators of economic health.</p>
+    </header>
+    <main class="container mx-auto p-4 md:p-8">
+        <section id="gdp" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#118AB2]">Deconstructing Gross Domestic Product (GDP)</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">GDP is the total value of everything produced in an economy. It can be measured by what we spend (the Expenditure Approach) or what we earn (the Income Approach). Both methods give us the same total, revealing the core structure of our economy.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center">GDP by Expenditure (What We Buy)</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">Personal Consumption is the largest driver of the economy, accounting for nearly 60% of all spending.</p>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="gdpExpenditureChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center">GDP by Income (What We Earn)</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">Wages and salaries represent the largest share of income generated from production, highlighting the importance of labour in the economy.</p>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="gdpIncomeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold text-center mb-6 text-[#118AB2]">The Circular Flow of Income & Spending</h3>
+                <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">In a simplified economy, the money you spend becomes someone else's income. This diagram shows how spending on goods and services flows from households to firms, and income flows back from firms to households, creating a continuous cycle.</p>
+                <div class="flex flex-col md:flex-row justify-around items-center space-y-8 md:space-y-0 md:space-x-8">
+                    <div class="text-center p-6 bg-blue-100 rounded-lg shadow">
+                        <p class="text-2xl font-bold">🏠</p>
+                        <p class="font-semibold text-lg">Households</p>
+                        <p class="text-sm text-gray-600">Supply labour, receive income</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <p class="font-semibold text-green-600">Spending on Goods & Services</p>
+                        <div class="flow-arrow text-[#06D6A0]">→</div>
+                        <div class="flow-arrow text-[#FF6B6B] mt-4">←</div>
+                        <p class="font-semibold text-red-500">Income (Wages, Profit)</p>
+                    </div>
+                    <div class="text-center p-6 bg-green-100 rounded-lg shadow">
+                        <p class="text-2xl font-bold">🏢</p>
+                        <p class="font-semibold text-lg">Firms</p>
+                        <p class="text-sm text-gray-600">Produce goods, pay income</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="inflation-unemployment" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#118AB2]">The Human Element: Inflation & Unemployment</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Price stability and full employment are two of the most important economic goals. Inflation erodes purchasing power, while unemployment represents lost output and personal hardship. Policymakers constantly navigate the trade-offs between them.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Understanding Unemployment</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center flex-grow">Unemployment isn't monolithic. It's composed of different types, some of which are natural in a dynamic economy (Frictional, Structural), while others signal economic downturns (Cyclical).</p>
+                    <div class="chart-container h-80 md:h-96 mt-auto">
+                        <canvas id="unemploymentChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-4 text-center">The Inflation-Unemployment Trade-off</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center flex-grow">The Phillips Curve illustrates a short-run inverse relationship: policies that lower unemployment often lead to higher inflation, and vice-versa. In the long run, however, there is no such trade-off.</p>
+                    <div class="chart-container h-80 md:h-96 mt-auto">
+                        <canvas id="phillipsCurveChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="business-cycle" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#118AB2]">The Pulse of the Economy: Business Cycles</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Economies don't grow in a straight line. They experience cycles of expansion and contraction. Understanding these phases—peak, contraction, trough, and expansion—is key to diagnosing the economy's health and anticipating future trends.</p>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="chart-container h-96 md:h-[500px]">
+                    <canvas id="businessCycleChart"></canvas>
+                </div>
+            </div>
+        </section>
+        <section id="policy" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#118AB2]">Steering the Economy: Policy Levers</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">When the economy deviates from its potential, the government and the central bank use fiscal and monetary policy to steer it back on course. These tools are used to manage aggregate demand, fighting recessions and inflation.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center text-[#073B4C]">Fiscal Policy: The Government's Toolkit</h3>
+                    <p class="text-sm text-gray-600 mb-6 text-center">The government uses spending and taxes to influence the economy.</p>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-lg text-[#FF6B6B]">Fighting a Recession (Recessionary Gap)</h4>
+                            <div class="flex items-center mt-2 space-x-2">
+                                <span class="p-2 bg-red-100 rounded-md">Increase Gov't Spending</span>
+                                <span class="flow-arrow text-gray-400">+</span>
+                                <span class="p-2 bg-red-100 rounded-md">Decrease Taxes</span>
+                                <span class="flow-arrow text-[#FF6B6B]">→</span>
+                                <span class="p-2 bg-red-200 rounded-md font-semibold">Expansionary Policy</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg text-[#06D6A0]">Fighting Inflation (Inflationary Gap)</h4>
+                            <div class="flex items-center mt-2 space-x-2">
+                                <span class="p-2 bg-green-100 rounded-md">Decrease Gov't Spending</span>
+                                <span class="flow-arrow text-gray-400">+</span>
+                                <span class="p-2 bg-green-100 rounded-md">Increase Taxes</span>
+                                <span class="flow-arrow text-[#06D6A0]">→</span>
+                                <span class="p-2 bg-green-200 rounded-md font-semibold">Contractionary Policy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center text-[#073B4C]">Monetary Policy: The Central Bank's Role</h3>
+                    <p class="text-sm text-gray-600 mb-6 text-center">The central bank manages the money supply and interest rates.</p>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-lg text-[#FFD166]">Fighting a Recession</h4>
+                            <div class="flex items-center mt-2 space-x-2">
+                                <span class="p-2 bg-yellow-100 rounded-md">Buy Bonds / Lower Rates</span>
+                                <span class="flow-arrow text-[#FFD166]">→</span>
+                                <span class="p-2 bg-yellow-200 rounded-md font-semibold">Expansionary Policy</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg text-[#118AB2]">Fighting Inflation</h4>
+                            <div class="flex items-center mt-2 space-x-2">
+                                <span class="p-2 bg-blue-100 rounded-md">Sell Bonds / Raise Rates</span>
+                                <span class="flow-arrow text-[#118AB2]">→</span>
+                                <span class="p-2 bg-blue-200 rounded-md font-semibold">Contractionary Policy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-[#073B4C] text-white p-6 text-center">
+        <p>An infographic by Canvas Infographics. Data synthesized from general economics principles.</p>
+    </footer>
+    <script>
+        const wrapLabel = (label) => {
+            const maxLen = 16;
+            if (label.length <= maxLen) {
+                return label;
+            }
+            const words = label.split(' ');
+            let currentLine = '';
+            const lines = [];
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#073B4C',
+                        font: {
+                           size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#073B4C' },
+                    grid: { color: '#E2E8F0' }
+                },
+                x: {
+                    ticks: { color: '#073B4C' },
+                    grid: { display: false }
+                }
+            }
+        };
+        const gdpExpenditureCtx = document.getElementById('gdpExpenditureChart').getContext('2d');
+        new Chart(gdpExpenditureCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Personal Consumption (C)', 'Gross Investment (I)', 'Government Purchases (G)', 'Net Exports (X-M)'],
+                datasets: [{
+                    label: '% of GDP',
+                    data: [59, 18, 20, 3],
+                    backgroundColor: ['#06D6A0', '#FFD166', '#118AB2', '#FF6B6B'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#073B4C' }
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+        const gdpIncomeCtx = document.getElementById('gdpIncomeChart').getContext('2d');
+        new Chart(gdpIncomeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Wages and salaries', 'Corporate income', 'Proprietors’ incomes', 'Indirect taxes', 'Depreciation'].map(wrapLabel),
+                datasets: [{
+                    label: 'Share of Total Income (%)',
+                    data: [50, 15, 10, 13, 12],
+                    backgroundColor: ['#118AB2', '#06D6A0', '#FFD166', '#FF6B6B', '#073B4C'],
+                }]
+            },
+            options: { ...defaultChartOptions, indexAxis: 'y' }
+        });
+        const unemploymentCtx = document.getElementById('unemploymentChart').getContext('2d');
+        new Chart(unemploymentCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Normal Economy', 'Recession'],
+                datasets: [
+                    {
+                        label: 'Frictional',
+                        data: [2.5, 2.5],
+                        backgroundColor: '#118AB2',
+                    },
+                    {
+                        label: 'Structural',
+                        data: [3, 3],
+                        backgroundColor: '#06D6A0',
+                    },
+                    {
+                        label: 'Cyclical',
+                        data: [0, 4],
+                        backgroundColor: '#FF6B6B',
+                    }
+                ]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    x: { stacked: true, ticks: { color: '#073B4C' }, grid: { display: false } },
+                    y: { stacked: true, ticks: { color: '#073B4C' }, grid: { color: '#E2E8F0' } }
+                },
+                 plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#073B4C' }
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+        const phillipsCurveCtx = document.getElementById('phillipsCurveChart').getContext('2d');
+        new Chart(phillipsCurveCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Short-Run Trade-off',
+                    data: [
+                        {x: 3, y: 10}, {x: 4, y: 6}, {x: 5, y: 4},
+                        {x: 6, y: 3}, {x: 7, y: 2.5}, {x: 8, y: 2.2}
+                    ],
+                    backgroundColor: '#FF6B6B',
+                    showLine: true,
+                    borderColor: '#FF6B6B',
+                    tension: 0.4
+                }, {
+                    type: 'line',
+                    label: 'Long-Run Phillips Curve (Natural Rate)',
+                    data: [{x: 5.5, y: 0}, {x: 5.5, y: 12}],
+                    borderColor: '#073B4C',
+                    borderDash: [5, 5],
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'Unemployment Rate (%)', color: '#073B4C' },
+                        ticks: { color: '#073B4C' },
+                        grid: { display: false }
+                    },
+                    y: {
+                        title: { display: true, text: 'Inflation Rate (%)', color: '#073B4C' },
+                        ticks: { color: '#073B4C' },
+                        grid: { color: '#E2E8F0' }
+                    }
+                }
+            }
+        });
+        const businessCycleCtx = document.getElementById('businessCycleChart').getContext('2d');
+        new Chart(businessCycleCtx, {
+            type: 'line',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9', 'Year 10'],
+                datasets: [
+                    {
+                        label: 'Actual Real GDP',
+                        data: [100, 104, 106, 103, 99, 101, 105, 109, 112, 108],
+                        borderColor: '#118AB2',
+                        backgroundColor: 'rgba(17, 138, 178, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#118AB2',
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'Potential GDP (Long-Run Trend)',
+                        data: [100, 102, 104, 106, 108, 110, 112, 114, 116, 118],
+                        borderColor: '#06D6A0',
+                        borderDash: [10, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                ...defaultChartOptions,
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    annotation: {
+                        annotations: {
+                            peak: { type: 'point', xValue: 'Year 3', yValue: 106, backgroundColor: '#FFD166', radius: 8 },
+                            trough: { type: 'point', xValue: 'Year 5', yValue: 99, backgroundColor: '#FF6B6B', radius: 8 },
+                            peakLabel: { type: 'label', xValue: 'Year 3', yValue: 110, content: 'Peak', color: '#073B4C', font: { weight: 'bold' } },
+                            troughLabel: { type: 'label', xValue: 'Year 5', yValue: 95, content: 'Trough', color: '#073B4C', font: { weight: 'bold' } },
+                            contractionLabel: { type: 'label', xValue: 'Year 4', yValue: 108, content: 'Contraction', color: '#073B4C' },
+                            expansionLabel: { type: 'label', xValue: 'Year 7', yValue: 100, content: 'Expansion', color: '#073B4C' },
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
